@@ -48,9 +48,9 @@
                     <h2 class="text-xl md:text-2xl xl:text-3xl font-black text-white uppercase leading-tight drop-shadow-md">{{ $school->name ?? 'Sistem Manajemen Rapor' }}</h2>
                 </div>
             </div>
-            
-            <h3 class="text-3xl md:text-4xl xl:text-5xl 2xl:text-6xl font-black uppercase leading-tight tracking-tight mt-6 lg:mt-8 xl:mt-12 text-white drop-shadow-lg">
-                Sistem Pengelolaan<br>Data Nilai Siswa
+            <h3 class="text-3xl lg:text-4xl xl:text-5xl font-black uppercase leading-tight tracking-tight mt-6 lg:mt-8 xl:mt-12 text-white drop-shadow-lg">
+                <span class="block md:whitespace-nowrap">Sistem Pengelolaan</span>
+                <span class="block md:whitespace-nowrap">Data Nilai Siswa</span>
             </h3>
         </div>
 
