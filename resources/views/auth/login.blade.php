@@ -31,24 +31,25 @@
         <div class="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-white/5 blur-3xl"></div>
     </div>
 
-    <div class="relative w-full max-w-[90rem] px-4 md:px-12 lg:px-24 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24 -mt-10 md:-mt-24">
+    <div class="relative w-full max-w-[90rem] px-6 md:px-10 xl:px-24 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 xl:gap-24 -mt-4 lg:-mt-12 xl:-mt-24">
         
         <!-- Bagian Kiri: Branding & Text -->
         <div class="flex-1 w-full text-center lg:text-left">
-            <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6 mb-8">
+            <div class="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-6 mb-6 lg:mb-8">
                 @if($school && $school->logo_path)
-                    <img src="{{ Storage::url($school->logo_path) }}" alt="Logo Sekolah" class="w-24 h-24 md:w-32 md:h-32 rounded-2xl brand-glow object-contain bg-white/10 p-2 border border-white/30 shrink-0">
+                    <img src="{{ Storage::url($school->logo_path) }}" alt="Logo Sekolah" class="w-20 h-20 md:w-24 md:h-24 xl:w-32 xl:h-32 rounded-2xl brand-glow object-contain bg-white/10 p-2 border border-white/30 shrink-0">
                 @else
-                    <div class="inline-flex items-center justify-center w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-white/20 brand-glow border border-white/30 shrink-0">
-                        <span class="text-white font-extrabold text-3xl">E-R</span>
+                    <div class="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 xl:w-32 xl:h-32 rounded-2xl bg-white/20 brand-glow border border-white/30 shrink-0">
+                        <span class="text-white font-extrabold text-2xl xl:text-3xl">E-R</span>
                     </div>
                 @endif
-                <div class="pt-2">
-                    <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 tracking-wide drop-shadow-md">E-Rapor</h1>
-                    <h2 class="text-2xl md:text-3xl font-black text-white uppercase leading-tight drop-shadow-md">{{ $school->name ?? 'Sistem Manajemen Rapor' }}</h2>
+                <div class="pt-1 xl:pt-2">
+                    <h1 class="text-2xl md:text-3xl xl:text-4xl font-bold text-white mb-1 xl:mb-2 tracking-wide drop-shadow-md">E-Rapor</h1>
+                    <h2 class="text-xl md:text-2xl xl:text-3xl font-black text-white uppercase leading-tight drop-shadow-md">{{ $school->name ?? 'Sistem Manajemen Rapor' }}</h2>
                 </div>
             </div>
-            <h3 class="text-4xl md:text-5xl lg:text-6xl font-black uppercase leading-tight tracking-tight mt-8 md:mt-12 text-white drop-shadow-lg">
+            
+            <h3 class="text-3xl md:text-4xl xl:text-5xl 2xl:text-6xl font-black uppercase leading-tight tracking-tight mt-6 lg:mt-8 xl:mt-12 text-white drop-shadow-lg">
                 Sistem Pengelolaan<br>Data Nilai Siswa
             </h3>
         </div>
