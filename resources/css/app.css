@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+@plugin "@tailwindcss/forms";
+
+@theme {
+  --color-primary-50: #f0f7f4;
+  --color-primary-100: #dcede6;
+  --color-primary-200: #bbdacf;
+  --color-primary-300: #8ec0af;
+  --color-primary-400: #5ea18c;
+  --color-primary-500: #3d8570;
+  --color-primary-600: #2d6b5a;
+  --color-primary-700: #255649;
+  --color-primary-800: #1f453b;
+  --color-primary-900: #1b3932;
+  --color-primary-950: #0e211d;
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-card: 0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 4px 12px 0 rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --shadow-sidebar: 2px 0 8px rgba(0,0,0,0.06);
+}
+
+@layer base {
+    html {
+        font-family: 'Inter', sans-serif;
+    }
+    body {
+        @apply bg-slate-50 text-slate-700 antialiased;
+    }
+    /* Hide native browser password reveal button */
+    input[type="password"]::-ms-reveal,
+    input[type="password"]::-ms-clear,
+    input[type="password"]::-webkit-credentials-auto-fill-button {
+        display: none !important;
+    }
+}
+
+@layer components {
+    /* ── Sidebar ────────────────────────────────── */
+    .sidebar {
+        @apply fixed inset-y-0 left-0 z-40 w-64 bg-white flex flex-col transition-transform duration-300;
+        box-shadow: var(--shadow-sidebar);
+    }
+    .sidebar-brand {
+        @apply flex items-center gap-3 px-6 py-5 border-b border-slate-100;
+    }
+    .sidebar-brand-icon {
+        @apply w-9 h-9 rounded-xl bg-primary-600 flex items-center justify-center text-white font-bold text-sm;
+    }
+    .sidebar-brand-text {
+        @apply font-bold text-slate-800 leading-tight;
+    }
+    .sidebar-nav {
+        @apply flex-1 overflow-y-auto py-4 px-3;
+    }
+    .sidebar-section-label {
+        @apply text-xs font-semibold text-slate-400 uppercase tracking-widest px-3 mb-2 mt-4;
+    }
+    .sidebar-item {
+        @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-primary-50 hover:text-primary-700 transition-colors duration-150 cursor-pointer mb-0.5;
+    }
+    .sidebar-item.active {
+        @apply bg-primary-50 text-primary-700 font-semibold;
+    }
+    .sidebar-item svg {
+        @apply w-5 h-5 flex-shrink-0;
+    }
+    .sidebar-footer {
+        @apply p-4 border-t border-slate-100;
+    }
+
+    /* ── Main Content ───────────────────────────── */
+    .main-content {
+        @apply ml-64 min-h-screen flex flex-col;
+    }
+    .topbar {
+        @apply sticky top-0 z-30 bg-white border-b border-slate-200 px-6 py-3.5 flex items-center justify-between;
+    }
+    .page-container {
+        @apply flex-1 p-6;
+    }
+    .page-header {
+        @apply mb-6;
+    }
+    .page-title {
+        @apply text-xl font-bold text-slate-800;
+    }
+    .page-subtitle {
+        @apply text-sm text-slate-500 mt-0.5;
+    }
+
+    /* ── Cards ──────────────────────────────────── */
+    .card {
+        @apply bg-white rounded-xl border border-slate-100 p-6;
+        box-shadow: var(--shadow-card);
+    }
+    .card-header {
+        @apply flex items-center justify-between mb-4;
+    }
+    .card-title {
+        @apply text-base font-semibold text-slate-800;
+    }
+    .stat-card {
+        @apply bg-white rounded-xl border border-slate-100 p-5 flex items-center gap-4;
+        box-shadow: var(--shadow-card);
+    }
+    .stat-icon {
+        @apply w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0;
+    }
+    .stat-value {
+        @apply text-2xl font-bold text-slate-800;
+    }
+    .stat-label {
+        @apply text-sm text-slate-500;
+    }
+
+    /* ── Buttons ─────────────────────────────────── */
+    .btn {
+        @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1;
+    }
+    .btn-primary {
+        @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+    }
+    .btn-secondary {
+        @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-400;
+    }
+    .btn-danger {
+        @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-offset-1 bg-red-50 text-red-700 hover:bg-red-100 focus:ring-red-400 border border-red-200;
+    }
+    .btn-sm {
+        @apply px-3 py-1.5 text-xs;
+    }
+    .btn-icon {
+        @apply p-2 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors;
+    }
+
+    /* ── Forms ──────────────────────────────────── */
+    .form-label {
+        @apply block text-sm font-medium text-slate-700 mb-1;
+    }
+    .form-input {
+        @apply w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-shadow;
+    }
+    .form-select {
+        @apply w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-800 bg-white appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+    }
+    .form-error {
+        @apply text-xs text-red-600 mt-1;
+    }
+    .form-group {
+        @apply mb-4;
+    }
+
+    /* ── Tables ─────────────────────────────────── */
+    .data-table {
+        @apply w-full text-sm;
+    }
+    .data-table thead th {
+        @apply px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide bg-slate-50 border-b border-slate-200;
+    }
+    .data-table tbody td {
+        @apply px-4 py-3 border-b border-slate-100 text-slate-700;
+    }
+    .data-table tbody tr:last-child td {
+        @apply border-b-0;
+    }
+    .data-table tbody tr:hover td {
+        @apply bg-slate-50;
+    }
+
+    /* ── Badges ─────────────────────────────────── */
+    .badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+    }
+    .badge-success {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700;
+    }
+    .badge-warning {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700;
+    }
+    .badge-danger {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700;
+    }
+    .badge-info {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700;
+    }
+    .badge-neutral {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600;
+    }
+
+    /* ── Alerts ─────────────────────────────────── */
+    .alert {
+        @apply rounded-lg px-4 py-3 text-sm flex items-start gap-3 mb-4;
+    }
+    .alert-success {
+        @apply rounded-lg px-4 py-3 text-sm flex items-start gap-3 mb-4 bg-green-50 text-green-800 border border-green-200;
+    }
+    .alert-error {
+        @apply rounded-lg px-4 py-3 text-sm flex items-start gap-3 mb-4 bg-red-50 text-red-800 border border-red-200;
+    }
+
+    /* ── Modal ──────────────────────────────────── */
+    .modal-backdrop {
+        @apply fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4;
+    }
+    .modal-box {
+        @apply bg-white rounded-2xl shadow-2xl w-full max-w-md p-6;
+        animation: modalIn 0.2s ease-out;
+    }
+    .modal-title {
+        @apply text-lg font-bold text-slate-800 mb-1;
+    }
+    .modal-subtitle {
+        @apply text-sm text-slate-500 mb-6;
+    }
+}
+
+@layer utilities {
+    .scrollbar-thin {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 transparent;
+    }
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(-8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
