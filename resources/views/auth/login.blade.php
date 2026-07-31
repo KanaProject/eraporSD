@@ -23,7 +23,7 @@
         }
     </style>
 </head>
-<body class="login-bg min-h-screen flex items-center justify-center p-4">
+<body class="login-bg min-h-screen flex items-center justify-center p-4 pb-16 md:pb-24">
 
     <!-- Background decoration -->
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -31,7 +31,7 @@
         <div class="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-white/5 blur-3xl"></div>
     </div>
 
-    <div class="relative w-full max-w-[90rem] px-6 md:px-10 xl:px-24 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 xl:gap-24 -mt-4 lg:-mt-12 xl:-mt-24">
+    <div class="relative w-full max-w-[90rem] px-6 md:px-10 xl:px-24 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-16 xl:gap-24">
         
         <!-- Bagian Kiri: Branding & Text -->
         <div class="flex-1 w-full text-center lg:text-left">
