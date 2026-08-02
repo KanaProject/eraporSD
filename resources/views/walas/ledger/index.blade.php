@@ -34,18 +34,18 @@
         <table class="w-full text-sm border-collapse border border-slate-200">
             <thead class="sticky top-0 z-10 shadow-sm outline outline-1 outline-slate-200">
                 <tr>
-                <th rowspan="2" class="border border-slate-200 bg-indigo-50/50 p-2 font-semibold text-indigo-900 w-10 text-center">No</th>
-                <th rowspan="2" class="border border-slate-200 bg-indigo-50/50 p-2 font-semibold text-indigo-900 text-left min-w-[200px]">Nama Siswa</th>
+                <th rowspan="2" class="border border-slate-200 bg-indigo-50 p-2 font-semibold text-indigo-900 w-10 text-center">No</th>
+                <th rowspan="2" class="border border-slate-200 bg-indigo-50 p-2 font-semibold text-indigo-900 text-left min-w-[200px]">Nama Siswa</th>
                 @foreach($subjects as $subject)
-                <th colspan="2" class="border border-slate-200 bg-indigo-100/50 p-2 font-semibold text-indigo-900 text-center whitespace-nowrap" title="{{ $subject->name }}">
+                <th colspan="2" class="border border-slate-200 bg-indigo-100 p-2 font-semibold text-indigo-900 text-center whitespace-nowrap" title="{{ $subject->name }}">
                     {{ $subject->code }}
                 </th>
                 @endforeach
             </tr>
             <tr>
                 @foreach($subjects as $subject)
-                <th class="border border-slate-200 bg-indigo-50/50 p-1 text-xs font-semibold text-indigo-800 text-center w-12">{{ $period->isAstsType() ? 'S1' : 'P' }}</th>
-                <th class="border border-slate-200 bg-indigo-50/50 p-1 text-xs font-semibold text-indigo-800 text-center w-12">{{ $period->isAstsType() ? 'S2' : 'K' }}</th>
+                <th class="border border-slate-200 bg-indigo-50 p-1 text-xs font-semibold text-indigo-800 text-center w-12">{{ $period->isAstsType() ? 'S1' : 'P' }}</th>
+                <th class="border border-slate-200 bg-indigo-50 p-1 text-xs font-semibold text-indigo-800 text-center w-12">{{ $period->isAstsType() ? 'S2' : 'K' }}</th>
                 @endforeach
             </tr>
         </thead>
