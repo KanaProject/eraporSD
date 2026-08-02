@@ -13,6 +13,7 @@ use App\Models\AssessmentPeriod;
 use App\Models\Grade;
 use App\Models\HomeroomAssignment;
 use App\Models\ReportCardStatus;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -22,6 +23,8 @@ class DashboardController extends Controller
             'total_subjects' => Subject::where('is_active', true)->count(),
             'total_configs'  => SubjectGradeConfig::count(),
             'total_assign'   => TeacherSubjectAssignment::count(),
+            'total_classes'  => SchoolClass::count(),
+            'total_teachers' => User::role('guru')->count(),
         ];
         
         $activeYear = AcademicYear::getActive();

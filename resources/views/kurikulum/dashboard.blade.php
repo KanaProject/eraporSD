@@ -1,18 +1,64 @@
 <x-layouts.kurikulum title="Dashboard Kurikulum">
-<div class="page-header flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-    <div>
-        <h2 class="page-title">Dashboard Kurikulum</h2>
-        <p class="page-subtitle">Pantau progres pengisian nilai dan cetak rapor</p>
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-purple-800 to-fuchsia-600 rounded-xl shadow-lg p-6 mb-6 text-white flex flex-col md:flex-row items-center justify-between gap-4 relative overflow-hidden">
+        <div class="relative z-10 flex items-center gap-4 w-full md:w-auto">
+            <div class="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center shrink-0 shadow-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                </svg>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold mb-1">Dashboard Kurikulum</h2>
+                <div class="flex flex-wrap items-center gap-2 text-sm text-purple-100">
+                    <span class="bg-purple-900/50 px-2.5 py-1 rounded-md font-medium border border-purple-500/50">TA: {{ $activeYear?->name ?? '-' }}</span>
+                    <span class="bg-purple-900/50 px-2.5 py-1 rounded-md font-medium border border-purple-500/50">Periode Aktif: {{ \App\Models\AssessmentPeriod::getActive()?->name ?? '-' }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="relative z-10 w-full md:w-auto shrink-0 flex items-center gap-3">
+            <label for="periodFilter" class="text-sm font-semibold text-purple-100 whitespace-nowrap hidden md:block">Filter Periode:</label>
+            <select id="periodFilter" onchange="window.location.href='?period_id='+this.value" class="form-input text-sm py-2 pl-3 pr-8 w-full md:min-w-[220px] cursor-pointer text-slate-800 font-semibold border-0 shadow-md rounded-lg">
+                @foreach($periods as $p)
+                    <option value="{{ $p->id }}" {{ $selectedPeriod?->id == $p->id ? 'selected' : '' }}>
+                        {{ $p->name }} {{ $p->is_active ? '(Aktif)' : '' }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <!-- Decorations -->
+        <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
+        <div class="absolute bottom-0 left-20 -mb-10 w-32 h-32 bg-purple-400 opacity-20 rounded-full blur-xl"></div>
     </div>
-    <div class="flex items-center gap-2 shrink-0">
-        <label for="periodFilter" class="text-sm font-semibold text-slate-600">Periode:</label>
-        <select id="periodFilter" onchange="window.location.href='?period_id='+this.value" class="form-input text-sm py-1.5 pl-3 pr-8 min-w-[200px] cursor-pointer">
-            @foreach($periods as $p)
-                <option value="{{ $p->id }}" {{ $selectedPeriod?->id == $p->id ? 'selected' : '' }}>
-                    {{ $p->name }} {{ $p->is_active ? '(Aktif)' : '' }}
-                </option>
-            @endforeach
-        </select>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="stat-card p-4 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:-translate-y-1 transition-transform">
+        <div class="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+        </div>
+        <div>
+            <div class="text-2xl font-black text-slate-800 leading-none mb-1">{{ $stats['total_classes'] }}</div>
+            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Rombongan Belajar (Kelas)</div>
+        </div>
+    </div>
+    
+    <div class="stat-card p-4 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:-translate-y-1 transition-transform">
+        <div class="w-12 h-12 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </div>
+        <div>
+            <div class="text-2xl font-black text-slate-800 leading-none mb-1">{{ $stats['total_teachers'] }}</div>
+            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Tenaga Pendidik</div>
+        </div>
+    </div>
+    
+    <div class="stat-card p-4 bg-white rounded-xl shadow-sm border border-slate-100 flex items-center gap-4 hover:-translate-y-1 transition-transform">
+        <div class="w-12 h-12 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+        </div>
+        <div>
+            <div class="text-2xl font-black text-slate-800 leading-none mb-1">{{ $stats['total_subjects'] }}</div>
+            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Mata Pelajaran Aktif</div>
+        </div>
     </div>
 </div>
 
