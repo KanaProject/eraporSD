@@ -80,7 +80,7 @@
             </select>
         </form>
         <div class="w-full md:w-auto flex justify-end">
-            <a href="{{ route('guru.grade-input.index') }}" class="inline-flex w-full md:w-auto items-center justify-center gap-2 px-6 py-2.5 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+            <a href="{{ route('guru.grades.index') }}" class="inline-flex w-full md:w-auto items-center justify-center gap-2 px-6 py-2.5 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
                 <span>Cek Nilai Siswa</span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
             </a>
