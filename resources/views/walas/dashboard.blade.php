@@ -112,38 +112,40 @@
     <div class="h-72"><canvas id="classAvgChart"></canvas></div>
 </div>
 
-<div class="card mb-6">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-        <h3 class="card-title">Grafik Pertumbuhan Rata-Rata Siswa</h3>
-        <select id="studentSelect1" class="form-select text-sm w-full md:w-64">
-            <option value="">-- Pilih Siswa --</option>
-            @foreach($students as $s)
-            <option value="{{ $s->id }}">{{ $s->name }}</option>
-            @endforeach
-        </select>
-    </div>
-    <div class="h-72"><canvas id="studentAvgChart"></canvas></div>
-</div>
-
-<div class="card mb-6">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-        <h3 class="card-title">Grafik Mata Pelajaran Siswa</h3>
-        <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-            <select id="studentSelect2" class="form-select text-sm w-full sm:w-48">
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+    <div class="card h-full flex flex-col">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+            <h3 class="card-title">Grafik Pertumbuhan Rata-Rata Siswa</h3>
+            <select id="studentSelect1" class="form-select text-sm w-full md:w-56">
                 <option value="">-- Pilih Siswa --</option>
                 @foreach($students as $s)
                 <option value="{{ $s->id }}">{{ $s->name }}</option>
                 @endforeach
             </select>
-            <select id="subjectSelect" class="form-select text-sm w-full sm:w-48">
-                <option value="">-- Pilih Mata Pelajaran --</option>
-                @foreach($subjects as $sub)
-                <option value="{{ $sub->id }}">{{ $sub->name }}</option>
-                @endforeach
-            </select>
         </div>
+        <div class="h-72 flex-1"><canvas id="studentAvgChart"></canvas></div>
     </div>
-    <div class="h-72"><canvas id="subjectAvgChart"></canvas></div>
+
+    <div class="card h-full flex flex-col">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+            <h3 class="card-title">Grafik Mata Pelajaran Siswa</h3>
+            <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                <select id="studentSelect2" class="form-select text-sm w-full sm:w-40">
+                    <option value="">-- Pilih Siswa --</option>
+                    @foreach($students as $s)
+                    <option value="{{ $s->id }}">{{ $s->name }}</option>
+                    @endforeach
+                </select>
+                <select id="subjectSelect" class="form-select text-sm w-full sm:w-40">
+                    <option value="">-- Pilih Mata Pelajaran --</option>
+                    @foreach($subjects as $sub)
+                    <option value="{{ $sub->id }}">{{ $sub->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="h-72 flex-1"><canvas id="subjectAvgChart"></canvas></div>
+    </div>
 </div>
 
 @push('scripts')
