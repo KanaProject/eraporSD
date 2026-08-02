@@ -19,13 +19,20 @@ class DashboardController extends Controller
         $user       = Auth::user();
         $activeYear = AcademicYear::getActive();
 
-        // Get homeroom class
-        $assignment = HomeroomAssignment::where('user_id', $user->id)
+        // Get homeroom class(es)
+        $assignments = HomeroomAssignment::where('user_id', $user->id)
             ->where('academic_year_id', $activeYear?->id)
             ->with('schoolClass')
-            ->first();
+            ->get();
 
-        $myClass = $assignment?->schoolClass;
+        $myClasses = $assignments->pluck('schoolClass')->sortBy('name');
+        
+        $classId = request('class_id');
+        if (!$classId && $myClasses->isNotEmpty()) {
+            $classId = $myClasses->first()->id;
+        }
+        
+        $myClass = $myClasses->where('id', $classId)->first();
         
         $periods = AssessmentPeriod::whereHas('semester', function ($q) use ($activeYear) {
             $q->where('academic_year_id', $activeYear?->id);
@@ -90,7 +97,7 @@ class DashboardController extends Controller
         }
 
         return view('walas.dashboard', compact(
-            'myClass', 'activeYear', 'periods', 'students', 'subjects',
+            'myClasses', 'myClass', 'activeYear', 'periods', 'students', 'subjects',
             'classData', 'studentData', 'studentSubjectData'
         ));
     }

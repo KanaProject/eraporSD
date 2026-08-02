@@ -10,8 +10,21 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
     <div class="card bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0 shadow-lg shadow-primary-500/30">
-        <div class="font-medium text-primary-100 mb-1">Kelas Anda</div>
-        <div class="text-4xl font-extrabold mb-4">{{ $myClass->name ?? '-' }}</div>
+        <div class="flex justify-between items-start">
+            <div>
+                <div class="font-medium text-primary-100 mb-1">Kelas Anda</div>
+                <div class="text-4xl font-extrabold mb-4">{{ $myClass->name ?? '-' }}</div>
+            </div>
+            @if(isset($myClasses) && $myClasses->count() > 1)
+            <form method="GET">
+                <select name="class_id" class="form-select bg-white/20 border border-white/30 text-white rounded-lg focus:ring-white/50 focus:border-white/50 text-sm" onchange="this.form.submit()">
+                    @foreach($myClasses as $c)
+                    <option value="{{ $c->id }}" {{ $myClass->id == $c->id ? 'selected' : '' }} class="text-slate-800">{{ $c->name }}</option>
+                    @endforeach
+                </select>
+            </form>
+            @endif
+        </div>
         <div class="flex items-center gap-2 text-primary-50">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
             <span class="font-medium text-lg">{{ $students->count() }} Siswa Aktif</span>
