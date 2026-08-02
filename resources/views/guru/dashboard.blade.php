@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="text-center md:text-right">
-            <h1 class="text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md text-white/90">Dashboard Input Nilai Guru</h1>
+            <h1 class="text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md text-white/90">Dashboard Penilaian</h1>
         </div>
     </div>
 
