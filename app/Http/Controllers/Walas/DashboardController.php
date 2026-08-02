@@ -45,8 +45,13 @@ class DashboardController extends Controller
             ->with('subject')
             ->get();
             
-        // Build Subjects List from grades
-        $subjects = $grades->pluck('subject')->unique('id')->sortBy('name')->values();
+        // Build Subjects List based on KKM config for this class level
+        $subjects = collect();
+        if ($myClass) {
+            $subjects = Subject::whereHas('subjectGradeConfigs', function($q) use ($myClass) {
+                $q->where('grade_level', $myClass->level);
+            })->orderBy('name')->get();
+        }
         
         // Data Aggregation
         $classData = [];

@@ -1,19 +1,32 @@
 <x-layouts.walas title="Dashboard Analitik Kelas">
     <!-- Header -->
     <div class="bg-gradient-to-r from-blue-900 to-blue-700 rounded-xl shadow-lg p-6 mb-6 text-white flex flex-col md:flex-row items-center md:justify-between gap-4">
-        <div class="flex items-center gap-4">
+        <div class="flex flex-col md:flex-row items-start md:items-center gap-4 w-full md:w-auto">
             <div class="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner text-xl font-bold">
                 @php
                     $initials = collect(explode(' ', Auth::user()->name))->map(fn($n) => substr($n, 0, 1))->take(2)->implode('');
                 @endphp
                 {{ strtoupper($initials) }}
             </div>
-            <div>
-                <h2 class="text-2xl font-bold">{{ Auth::user()->name }}</h2>
+            <div class="flex-1 w-full md:w-auto">
+                <h2 class="text-2xl font-bold mb-2">{{ Auth::user()->name }}</h2>
+                <div class="flex flex-wrap items-center gap-2 text-sm text-blue-100">
+                    <span class="bg-blue-800/50 px-2.5 py-1 rounded-md font-medium border border-blue-600/50">Wali Kelas {{ $myClass->name ?? '-' }}</span>
+                    <span class="bg-blue-800/50 px-2.5 py-1 rounded-md font-medium border border-blue-600/50">{{ $students->count() }} Siswa</span>
+                    @if(isset($myClasses) && $myClasses->count() > 1)
+                    <form method="GET" class="inline-block mt-2 sm:mt-0 w-full sm:w-auto">
+                        <select name="class_id" class="form-select py-1 pl-3 pr-8 bg-blue-800/80 border-blue-600/50 text-white rounded-md focus:ring-blue-400 focus:border-blue-400 text-xs font-medium cursor-pointer w-full sm:w-auto" onchange="this.form.submit()">
+                            @foreach($myClasses as $c)
+                            <option value="{{ $c->id }}" {{ $myClass->id == $c->id ? 'selected' : '' }} class="text-slate-800 bg-white">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                    @endif
+                </div>
             </div>
         </div>
-        <div class="text-center md:text-right">
-            <h1 class="text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md text-white/90">DASHBOARD WALI KELAS</h1>
+        <div class="text-left md:text-right w-full md:w-auto">
+            <h1 class="text-xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md text-white/90">DASHBOARD WALI KELAS</h1>
         </div>
     </div>
 
@@ -24,20 +37,7 @@
     </div>
     @else
 
-    @if(isset($myClasses) && $myClasses->count() > 1)
-    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
-        <form method="GET" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <label class="font-bold text-slate-700 whitespace-nowrap">Pilih Kelas:</label>
-                <select name="class_id" class="form-select border-slate-300 rounded-lg shadow-sm focus:border-blue-600 focus:ring-blue-600 w-full sm:w-40 bg-white font-medium text-slate-700" onchange="this.form.submit()">
-                    @foreach($myClasses as $c)
-                    <option value="{{ $c->id }}" {{ $myClass->id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </form>
-    </div>
-    @endif
+
 
     <!-- Widgets -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -47,8 +47,10 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             </div>
             <div>
-                <p class="text-sm text-green-100 font-medium">Siswa ({{ $myClass->name ?? '-' }})</p>
-                <h3 class="text-xl font-bold">{{ $students->where('gender', 'L')->count() }} L / {{ $students->where('gender', 'P')->count() }} P</h3>
+                <div class="text-sm font-bold flex flex-col gap-0.5 mt-1">
+                    <span>Laki-laki : {{ $students->where('gender', 'L')->count() }}</span>
+                    <span>Perempuan : {{ $students->where('gender', 'P')->count() }}</span>
+                </div>
             </div>
         </div>
 
@@ -70,7 +72,7 @@
             </div>
             <div>
                 <p class="text-sm text-indigo-100 font-medium">Periode Aktif</p>
-                <h3 class="text-xl font-bold truncate max-w-[140px]" title="{{ $activePeriod ? $activePeriod->name : '-' }}">{{ $activePeriod ? $activePeriod->name : '-' }}</h3>
+                <h3 class="text-[17px] font-bold leading-tight" title="{{ $activePeriod ? $activePeriod->name : '-' }}">{{ $activePeriod ? $activePeriod->name : '-' }}</h3>
             </div>
         </div>
 
