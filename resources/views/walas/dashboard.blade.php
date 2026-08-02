@@ -1,42 +1,83 @@
 <x-layouts.walas title="Dashboard Analitik Kelas">
-<div class="page-header"><h2 class="page-title">Dashboard Analitik Kelas</h2><p class="page-subtitle">Tren Pertumbuhan Nilai Selama 4 Periode</p></div>
-
-@if(!$myClass)
-<div class="card text-center py-16 text-slate-400">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-3 text-slate-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-    Anda belum ditugaskan sebagai wali kelas untuk tahun ajaran aktif.
-</div>
-@else
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-    <div class="card bg-gradient-to-br from-primary-600 to-primary-700 text-white border-0 shadow-lg shadow-primary-500/30">
-        <div class="flex justify-between items-start">
-            <div>
-                <div class="font-medium text-primary-100 mb-1">Kelas Anda</div>
-                <div class="text-4xl font-extrabold mb-4">{{ $myClass->name ?? '-' }}</div>
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-blue-900 to-blue-700 rounded-xl shadow-lg p-6 mb-6 text-white flex flex-col md:flex-row items-center md:justify-between gap-4">
+        <div class="flex items-center gap-4">
+            <div class="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner text-xl font-bold">
+                @php
+                    $initials = collect(explode(' ', Auth::user()->name))->map(fn($n) => substr($n, 0, 1))->take(2)->implode('');
+                @endphp
+                {{ strtoupper($initials) }}
             </div>
-            @if(isset($myClasses) && $myClasses->count() > 1)
-            <form method="GET">
-                <select name="class_id" class="form-select bg-white/20 border border-white/30 text-white rounded-lg focus:ring-white/50 focus:border-white/50 text-sm" onchange="this.form.submit()">
+            <div>
+                <h2 class="text-2xl font-bold">{{ Auth::user()->name }}</h2>
+            </div>
+        </div>
+        <div class="text-center md:text-right">
+            <h1 class="text-2xl md:text-3xl font-black uppercase tracking-wider drop-shadow-md text-white/90">DASHBOARD WALI KELAS</h1>
+        </div>
+    </div>
+
+    @if(isset($myClasses) && $myClasses->count() > 1)
+    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+        <form method="GET" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <label class="font-bold text-slate-700 whitespace-nowrap">Pilih Kelas:</label>
+                <select name="class_id" class="form-select border-slate-300 rounded-lg shadow-sm focus:border-blue-600 focus:ring-blue-600 w-full sm:w-40 bg-white font-medium text-slate-700" onchange="this.form.submit()">
                     @foreach($myClasses as $c)
-                    <option value="{{ $c->id }}" {{ $myClass->id == $c->id ? 'selected' : '' }} class="text-slate-800">{{ $c->name }}</option>
+                    <option value="{{ $c->id }}" {{ $myClass->id == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
                     @endforeach
                 </select>
-            </form>
-            @endif
+            </div>
+        </form>
+    </div>
+    @endif
+
+    <!-- Widgets -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <!-- Widget 1: L/P -->
+        <div class="bg-gradient-to-br from-emerald-600 to-green-700 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
+            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+            </div>
+            <div>
+                <p class="text-sm text-green-100 font-medium">Siswa ({{ $myClass->name ?? '-' }})</p>
+                <h3 class="text-xl font-bold">{{ $students->where('gender', 'L')->count() }} L / {{ $students->where('gender', 'P')->count() }} P</h3>
+            </div>
         </div>
-        <div class="flex items-center gap-2 text-primary-50">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
-            <span class="font-medium text-lg">{{ $students->count() }} Siswa Aktif</span>
+
+        <!-- Widget 2: Mapel -->
+        <div class="bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
+            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+            </div>
+            <div>
+                <p class="text-sm text-orange-100 font-medium">Mata Pelajaran</p>
+                <h3 class="text-xl font-bold">{{ $subjects->count() }} Mapel</h3>
+            </div>
+        </div>
+
+        <!-- Widget 3: Semester -->
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-700 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
+            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            </div>
+            <div>
+                <p class="text-sm text-indigo-100 font-medium">Periode Aktif</p>
+                <h3 class="text-xl font-bold truncate max-w-[140px]" title="{{ $activePeriod ? $activePeriod->name : '-' }}">{{ $activePeriod ? $activePeriod->name : '-' }}</h3>
+            </div>
+        </div>
+
+        <!-- Widget 4: Tahun Ajaran -->
+        <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
+            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" /></svg>
+            </div>
+            <div>
+                <p class="text-sm text-blue-100 font-medium">Tahun Ajaran</p>
+                <h3 class="text-xl font-bold">{{ $activeYear ? $activeYear->name : '-' }}</h3>
+            </div>
         </div>
     </div>
-    
-    <div class="card flex flex-col justify-center">
-        <h3 class="card-title mb-2">Tahun Ajaran Aktif</h3>
-        <div class="text-2xl font-bold text-slate-800">{{ $activeYear->name }}</div>
-        <p class="text-sm text-slate-500 mt-2">Analitik di bawah ini merangkum perkembangan nilai siswa dalam 4 periode penilaian pada tahun ajaran ini.</p>
-    </div>
-</div>
 
 <div class="card mb-6">
     <h3 class="card-title mb-4">Grafik Pertumbuhan Rata-Rata Kelas</h3>
