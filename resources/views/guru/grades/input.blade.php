@@ -95,19 +95,30 @@
         </table>
 
         @if($students->isNotEmpty())
-        <div class="flex justify-between items-center mt-4 pt-4 border-t border-slate-100">
-            <span class="text-xs text-slate-400">{{ $students->count() }} siswa · Nilai disimpan otomatis ke database</span>
-            @if($period->is_active)
-                <button type="submit" class="btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                    Simpan Semua Nilai
-                </button>
-            @else
-                <span class="text-sm text-red-600 font-medium flex items-center gap-1.5 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
-                    Periode Terkunci
-                </span>
-            @endif
+        <div class="mt-4 pb-4">
+            {{ $students->links() }}
+        </div>
+        <div class="flex flex-col md:flex-row justify-between items-center mt-4 pt-4 border-t border-slate-100 gap-4">
+            <span class="text-xs text-slate-400">{{ $students->total() }} total siswa · Nilai disimpan otomatis ke database</span>
+            
+            <div class="flex items-center gap-3">
+                <a href="{{ route('guru.grades.index') }}" onclick="return confirm('Apakah Anda yakin ingin kembali? Harap simpan dulu perubahan nilai jika belum disimpan agar tidak hilang.')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 font-medium text-sm transition-colors shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                    Kembali
+                </a>
+
+                @if($period->is_active)
+                    <button type="submit" class="btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                        Simpan Semua Nilai
+                    </button>
+                @else
+                    <span class="text-sm text-red-600 font-medium flex items-center gap-1.5 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                        Periode Terkunci
+                    </span>
+                @endif
+            </div>
         </div>
         @endif
     </div>
