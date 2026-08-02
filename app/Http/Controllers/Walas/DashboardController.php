@@ -49,7 +49,7 @@ class DashboardController extends Controller
         $subjects = collect();
         if ($myClass) {
             $subjects = Subject::whereHas('subjectGradeConfigs', function($q) use ($myClass) {
-                $q->where('grade_level', $myClass->level);
+                $q->where('grade_level', $myClass->grade_level);
             })->orderBy('name')->get();
         }
         
