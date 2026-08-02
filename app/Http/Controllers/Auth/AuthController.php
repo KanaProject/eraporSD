@@ -13,7 +13,65 @@ class AuthController extends Controller
         if (Auth::check()) {
             return $this->redirectAfterLogin(Auth::user());
         }
-        return view('auth.login');
+
+        $school = \App\Models\School::first();
+
+        // Public aggregated stats — no sensitive names disclosed
+        $totalClasses  = \App\Models\SchoolClass::count();
+        $totalStudents = \App\Models\Student::where('is_active', true)->count();
+        $totalTeachers = \App\Models\User::role('guru')->count();
+        $activePeriod  = \App\Models\AssessmentPeriod::getActive();
+        $activeYear    = \App\Models\AcademicYear::getActive();
+
+        // Global grading progress per period
+        $gradingProgress = 0;
+        $reportProgress  = 0;
+        $classBars       = [];
+
+        if ($activePeriod) {
+            $assignments = \App\Models\TeacherSubjectAssignment::where(
+                'academic_year_id', $activeYear?->id
+            )->with('schoolClass')->get();
+
+            $totalA = $assignments->count();
+            $doneA  = 0;
+            foreach ($assignments as $a) {
+                $studentIds   = $a->schoolClass->students()->where('is_active', true)->pluck('id');
+                $total        = $studentIds->count();
+                if ($total == 0) { $doneA++; continue; }
+                $graded = \App\Models\Grade::where('assessment_period_id', $activePeriod->id)
+                    ->where('subject_id', $a->subject_id)
+                    ->whereIn('student_id', $studentIds)
+                    ->where(fn($q) => $q->whereNotNull('uh1')->orWhereNotNull('uh2')
+                        ->orWhereNotNull('ujian_teori')->orWhereNotNull('ujian_praktek'))
+                    ->count();
+                if ($graded >= $total) $doneA++;
+            }
+            $gradingProgress = $totalA > 0 ? round(($doneA / $totalA) * 100) : 0;
+
+            // Report card progress
+            $allStudentIds = \App\Models\Student::where('is_active', true)->pluck('id');
+            $totalS  = $allStudentIds->count();
+            $printed = \App\Models\ReportCardStatus::where('assessment_period_id', $activePeriod->id)
+                ->whereIn('student_id', $allStudentIds)
+                ->whereNotNull('generated_at')->count();
+            $reportProgress = $totalS > 0 ? round(($printed / $totalS) * 100) : 0;
+
+            // Per grade-level (1-6) grading progress
+            for ($g = 1; $g <= 6; $g++) {
+                $classIds    = \App\Models\SchoolClass::where('grade_level', $g)->pluck('id');
+                $sids        = \App\Models\Student::whereIn('school_class_id', $classIds)->where('is_active', true)->pluck('id');
+                $tot         = $sids->count();
+                $done        = \App\Models\ReportCardStatus::where('assessment_period_id', $activePeriod->id)
+                    ->whereIn('student_id', $sids)->whereNotNull('generated_at')->count();
+                $classBars[] = ['level' => $g, 'pct' => $tot > 0 ? round(($done / $tot) * 100) : 0, 'done' => $done, 'total' => $tot];
+            }
+        }
+
+        return view('auth.login', compact(
+            'school', 'totalClasses', 'totalStudents', 'totalTeachers',
+            'activePeriod', 'activeYear', 'gradingProgress', 'reportProgress', 'classBars'
+        ));
     }
 
     public function login(Request $request)
