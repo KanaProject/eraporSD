@@ -24,7 +24,7 @@
 <div class="space-y-6">
     @forelse($groupedProgress as $className => $items)
     <div class="card">
-        <div class="border-b border-emerald-100 pb-3 mb-4 flex items-center gap-2">
+        <div class="sticky top-[180px] z-10 bg-white border-b border-emerald-100 -mx-6 px-6 -mt-6 pt-6 pb-3 mb-4 flex items-center gap-2">
             <div class="w-2 h-6 bg-emerald-500 rounded-full"></div>
             <h3 class="text-lg font-bold text-emerald-900">Kelas {{ $className }}</h3>
         </div>
