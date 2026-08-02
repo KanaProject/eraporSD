@@ -41,7 +41,9 @@ class DashboardController extends Controller
         $subjectsForClass = collect();
 
         if ($selectedClass) {
-            $students = $selectedClass->students()->where('is_active', true)->orderBy('name')->get();
+            $students = $selectedClass->students()->where('is_active', true)->orderBy('name')
+                ->paginate(10)
+                ->appends(request()->query());
             $subjectsForClass = $assignments->where('school_class_id', $classId)->pluck('subject')->unique('id')->values();
             
             $subjectId = request('subject_id');
@@ -66,7 +68,7 @@ class DashboardController extends Controller
                 foreach ($periods as $period) {
                     $avg = Grade::where('subject_id', $subjectForClass->id)
                         ->where('assessment_period_id', $period->id)
-                        ->whereIn('student_id', $students->pluck('id'))
+                        ->whereHas('student', fn($q) => $q->where('school_class_id', $classId)->where('is_active', true))
                         ->avg('nilai_pengetahuan');
                     $chartData[] = $avg ? round((float) $avg, 2) : 0;
                 }

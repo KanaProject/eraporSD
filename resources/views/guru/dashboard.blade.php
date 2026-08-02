@@ -142,7 +142,7 @@
                                 $predikat = $grade ? $grade->predikat_pengetahuan : '-';
                             @endphp
                             <tr class="bg-white border-b hover:bg-blue-50/50 text-center transition-colors">
-                                <td class="px-4 py-3 border-r border-slate-100 font-medium text-slate-500">{{ $index + 1 }}.</td>
+                                <td class="px-4 py-3 border-r border-slate-100 font-medium text-slate-500">{{ $students->firstItem() + $index }}.</td>
                                 <td class="px-4 py-3 border-r border-slate-100 text-left font-semibold text-slate-800 whitespace-nowrap">{{ $student->name }}</td>
                                 <td class="px-4 py-3 border-r border-slate-100 font-medium text-slate-700">{{ $avgUh }}</td>
                                 <td class="px-4 py-3 border-r border-slate-100 font-medium text-slate-700">{{ $pen }}</td>
@@ -169,6 +169,11 @@
                     </tbody>
                 </table>
             </div>
+            @if($students->hasPages())
+                <div class="px-5 py-4 border-t border-slate-100">
+                    {{ $students->links() }}
+                </div>
+            @endif
         </div>
     </div>
 
