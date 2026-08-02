@@ -11,23 +11,20 @@
                 <h2 class="text-2xl font-bold mb-1">Cetak Rapor</h2>
                 <div class="flex flex-wrap items-center gap-2 text-sm text-indigo-100 mt-1">
                     <span class="bg-indigo-900/50 px-2.5 py-1 rounded-md font-medium border border-indigo-500/50">Kelas {{ $myClass->name }}</span>
-                    <span class="bg-indigo-900/50 px-2.5 py-1 rounded-md font-medium border border-indigo-500/50">Unduh PDF rapor</span>
+                    <select onchange="window.location.href=this.value" class="bg-indigo-900/50 text-indigo-50 border border-indigo-500/50 rounded-md px-2.5 py-1 pr-8 outline-none focus:ring-2 focus:ring-indigo-400 text-sm font-medium cursor-pointer appearance-none hover:bg-indigo-800/50 transition-colors" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e7ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+                        @foreach($periods as $p)
+                            <option value="{{ route('walas.report-cards.index', ['period_id' => $p->id]) }}" {{ $period->id == $p->id ? 'selected' : '' }} class="bg-indigo-900 text-white">
+                                Periode: {{ $p->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>
     </div>
 
-<div class="flex gap-2 mb-6 overflow-x-auto">
-    @foreach($periods as $p)
-    <a href="{{ route('walas.report-cards.index', ['period_id' => $p->id]) }}"
-        class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors {{ $period->id == $p->id ? 'bg-indigo-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-indigo-50' }}">
-        {{ $p->name }}
-    </a>
-    @endforeach
-</div>
-
-<div class="card overflow-x-auto">
-    <div class="flex items-center justify-between mb-4">
+<div class="card p-0 overflow-hidden">
+    <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-white">
         <div class="flex flex-wrap gap-2">
             <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md text-xs font-semibold border border-indigo-200">Periode: {{ $period->name }}</span>
             <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-md text-xs font-semibold border border-blue-200">Total Siswa: {{ $students->count() }}</span>
@@ -48,9 +45,12 @@
         @endif
     </div>
 
-    <table class="data-table">
-        <thead>
-            <tr class="border-b-2 border-indigo-200 bg-indigo-50/30">
+
+
+    <div class="overflow-y-auto max-h-[60vh] relative">
+        <table class="data-table w-full text-sm">
+            <thead class="sticky top-0 z-10 shadow-sm">
+                <tr class="border-b-2 border-indigo-200 bg-indigo-50">
                 <th class="w-10 text-indigo-900 font-semibold py-3 px-4">No</th>
                 <th class="text-indigo-900 font-semibold py-3 px-4 text-left">Nama Siswa</th>
                 <th class="text-indigo-900 font-semibold py-3 px-4 text-left">NIS/NISN</th>
@@ -89,6 +89,7 @@
             <tr><td colspan="5" class="text-center py-10 text-slate-400">Belum ada siswa di kelas ini.</td></tr>
             @endforelse
         </tbody>
-    </table>
+        </table>
+    </div>
 </div>
 </x-layouts.walas>
