@@ -1,6 +1,6 @@
 <x-layouts.guru title="Input Nilai">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-emerald-800 to-teal-600 rounded-xl shadow-lg p-6 mb-6 text-white flex flex-col md:flex-row items-center justify-between gap-4">
+    <div class="bg-gradient-to-r from-emerald-800 to-teal-600 rounded-xl shadow-lg p-6 mb-6 text-white flex flex-col md:flex-row items-center justify-between gap-4 sticky top-[72px] z-20">
         <div class="flex items-center gap-4">
             <div class="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
