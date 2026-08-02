@@ -12,21 +12,18 @@
                 <h2 class="text-2xl font-bold mb-1">Input Nilai — {{ $subject->name }}</h2>
                 <div class="flex flex-wrap items-center gap-2 text-sm text-emerald-100 mt-1">
                     <span class="bg-emerald-900/50 px-2.5 py-1 rounded-md font-medium border border-emerald-500/50">Kelas {{ $class->name }}</span>
-                    <span class="bg-emerald-900/50 px-2.5 py-1 rounded-md font-medium border border-emerald-500/50">Periode: {{ $period->name }}</span>
+                    <span class="bg-emerald-900/50 px-2.5 py-1 rounded-md font-medium border border-emerald-500/50">Kelas {{ $class->name }}</span>
+                    <select onchange="window.location.href=this.value" class="bg-emerald-900/50 text-emerald-50 border border-emerald-500/50 rounded-md px-2.5 py-1 pr-8 outline-none focus:ring-2 focus:ring-emerald-400 text-sm font-medium cursor-pointer appearance-none hover:bg-emerald-800/50 transition-colors" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23d1fae5%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+                        @foreach($periods as $p)
+                            <option value="{{ route('guru.grades.input', ['subject_id' => $subject->id, 'class_id' => $class->id, 'period_id' => $p->id]) }}" {{ $period->id == $p->id ? 'selected' : '' }} class="bg-emerald-900 text-white">
+                                Periode: {{ $p->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
         </div>
     </div>
-
-<!-- Period switcher -->
-<div class="flex gap-2 mb-6 overflow-x-auto">
-    @foreach($periods as $p)
-    <a href="{{ route('guru.grades.input', ['subject_id' => $subject->id, 'class_id' => $class->id, 'period_id' => $p->id]) }}"
-        class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors {{ $period->id == $p->id ? 'bg-emerald-600 text-white shadow-sm' : 'bg-white text-slate-600 border border-slate-200 hover:bg-emerald-50' }}">
-        {{ $p->name }}
-    </a>
-    @endforeach
-</div>
 
 <form method="POST" action="{{ route('guru.grades.save') }}">
     @csrf
@@ -97,16 +94,17 @@
                 @forelse($students as $i => $student)
                 @php $grade = $grades->get($student->id); @endphp
                 <tr class="border-b border-slate-100 hover:bg-slate-50/50">
-                    <td class="py-2 px-3 text-slate-400 text-xs">{{ $students->firstItem() + $i }}</td>
+                    <td class="py-2 px-3 text-slate-400 text-xs">{{ $i + 1 }}</td>
                     <td class="py-2 px-3">
                         <div class="font-medium text-slate-800">{{ $student->name }}</div>
                         <div class="text-xs text-slate-400">{{ $student->nis ?? '-' }}</div>
                     </td>
-                    @foreach(['uh1','uh2','ujian_teori','ujian_praktek'] as $field)
+                    @foreach(['uh1','uh2','ujian_teori','ujian_praktek'] as $colIndex => $field)
                     <td class="py-2 px-1 text-center">
                         <input type="number" name="grades[{{ $student->id }}][{{ $field }}]"
                             value="{{ $grade ? number_format((float)($grade->$field ?? 0), 2, '.', '') : '' }}"
-                            class="w-20 text-center text-sm border border-slate-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent disabled:bg-slate-100 disabled:text-slate-400"
+                            class="grade-input w-20 text-center text-sm border border-slate-200 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent disabled:bg-slate-100 disabled:text-slate-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            data-row="{{ $i }}" data-col="{{ $colIndex }}"
                             min="0" max="100" step="0.01" placeholder="—" {{ !$period->is_active ? 'disabled' : '' }}>
                     </td>
                     @endforeach
@@ -130,13 +128,42 @@
 
         @if($students->isNotEmpty())
         <div class="p-4 border-t border-slate-100 bg-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
-            <span class="text-xs text-slate-400">{{ $students->total() }} total siswa · Pastikan menekan tombol Simpan Semua Nilai di bagian atas.</span>
-            <div class="mt-0">
-                {{ $students->links() }}
-            </div>
+            <span class="text-xs text-slate-400">{{ $students->count() }} total siswa · Pastikan menekan tombol Simpan Semua Nilai di bagian atas.</span>
         </div>
         @endif
     </div>
 </form>
+
+<script>
+document.addEventListener('keydown', function(e) {
+    if (!e.target.classList.contains('grade-input')) return;
+    
+    let row = parseInt(e.target.dataset.row);
+    let col = parseInt(e.target.dataset.col);
+    let newTarget = null;
+    
+    switch(e.key) {
+        case 'ArrowUp':
+            newTarget = document.querySelector(`.grade-input[data-row="${row - 1}"][data-col="${col}"]`);
+            break;
+        case 'ArrowDown':
+        case 'Enter':
+            newTarget = document.querySelector(`.grade-input[data-row="${row + 1}"][data-col="${col}"]`);
+            break;
+        case 'ArrowLeft':
+            newTarget = document.querySelector(`.grade-input[data-row="${row}"][data-col="${col - 1}"]`);
+            break;
+        case 'ArrowRight':
+            newTarget = document.querySelector(`.grade-input[data-row="${row}"][data-col="${col + 1}"]`);
+            break;
+    }
+    
+    if (newTarget) {
+        e.preventDefault();
+        newTarget.focus();
+        newTarget.select();
+    }
+});
+</script>
 
 </x-layouts.guru>

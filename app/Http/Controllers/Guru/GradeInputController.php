@@ -74,8 +74,7 @@ class GradeInputController extends Controller
         $students = Student::where('school_class_id', $classId)
             ->where('is_active', true)
             ->orderBy('name')
-            ->paginate(15)
-            ->appends(['subject_id' => $subjectId, 'class_id' => $classId, 'period_id' => $periodId]);
+            ->get();
 
         // Load existing grades keyed by student_id
         $grades = Grade::where('subject_id', $subjectId)
