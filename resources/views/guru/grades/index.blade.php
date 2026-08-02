@@ -22,8 +22,34 @@
 @endphp
 
 <div class="space-y-6">
+    @if($groupedProgress->count() > 0)
+    <div class="flex items-center gap-3 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+        <span class="font-bold text-slate-700">Pilih Kelas:</span>
+        @if($groupedProgress->count() > 1)
+            <select id="classFilter" class="form-input w-48 font-semibold text-emerald-800" onchange="filterClass(this.value)">
+                @foreach($groupedProgress->keys() as $className)
+                    <option value="{{ Str::slug($className) }}">Kelas {{ $className }}</option>
+                @endforeach
+            </select>
+            <script>
+                function filterClass(className) {
+                    document.querySelectorAll('.class-card').forEach(card => {
+                        card.style.display = card.dataset.class === className ? 'block' : 'none';
+                    });
+                }
+                document.addEventListener('DOMContentLoaded', () => {
+                    const select = document.getElementById('classFilter');
+                    if (select) filterClass(select.value);
+                });
+            </script>
+        @else
+            <span class="text-emerald-800 font-bold bg-emerald-50 px-3 py-1.5 rounded-lg border border-emerald-200">Kelas {{ $groupedProgress->keys()->first() }}</span>
+        @endif
+    </div>
+    @endif
+
     @forelse($groupedProgress as $className => $items)
-    <div class="card">
+    <div class="card class-card" data-class="{{ Str::slug($className) }}">
         <div class="sticky top-[180px] z-10 bg-white border-b border-emerald-100 -mx-6 px-6 -mt-6 pt-6 pb-3 mb-4 flex items-center gap-2">
             <div class="w-2 h-6 bg-emerald-500 rounded-full"></div>
             <h3 class="text-lg font-bold text-emerald-900">Kelas {{ $className }}</h3>
