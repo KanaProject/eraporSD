@@ -15,65 +15,69 @@ class DashboardController extends Controller
     {
         $user       = Auth::user();
         $activeYear = AcademicYear::getActive();
+        $activePeriod = AssessmentPeriod::getActive();
 
-        // 1. Get subjects taught by this teacher this year
+        // 1. Get assignments for this teacher this year
         $assignments = TeacherSubjectAssignment::where('user_id', $user->id)
             ->where('academic_year_id', $activeYear?->id)
-            ->with(['subject', 'schoolClass.students' => fn($q) => $q->where('is_active', true)])
+            ->with(['subject', 'schoolClass'])
             ->get();
             
         $subjectsTaught = $assignments->pluck('subject')->unique('id')->values();
+        $classesTaught = $assignments->pluck('schoolClass')->unique('id')->sortBy('name')->values();
         
-        // 2. Get students taught
-        $studentsTaught = $assignments->pluck('schoolClass.students')->flatten()->unique('id')->sortBy('name')->values();
-
-        // 3. Get last 4 assessment periods (chronological order)
-        $periods = AssessmentPeriod::orderBy('id', 'desc')->take(4)->get()->reverse()->values();
-        $periodIds = $periods->pluck('id');
-
-        // 4. Fetch all relevant grades
-        $grades = Grade::whereIn('subject_id', $subjectsTaught->pluck('id'))
-            ->whereIn('student_id', $studentsTaught->pluck('id'))
-            ->whereIn('assessment_period_id', $periodIds)
-            ->whereNotNull('nilai_pengetahuan')
-            ->get();
-
-        // 5. Prepare data for chart (JSON structure for frontend)
-        $chartLabels = $periods->pluck('name')->toArray();
-        $chartData   = []; // for the default view (all subjects average)
-        $subjectData = []; // for detailed view (per subject and per student)
-
-        foreach ($subjectsTaught as $subject) {
-            $dataPoints = [];
-            $studentPoints = [];
-            
-            // Initialize student arrays
-            foreach ($studentsTaught as $student) {
-                $studentPoints[$student->id] = array_fill(0, 4, null);
-            }
-
-            foreach ($periods as $index => $period) {
-                $periodGrades = $grades->where('subject_id', $subject->id)->where('assessment_period_id', $period->id);
-                $avg = $periodGrades->avg('nilai_pengetahuan');
-                $dataPoints[] = $avg ? round((float) $avg, 2) : 0;
-                
-                foreach ($periodGrades as $grade) {
-                    $studentPoints[$grade->student_id][$index] = round((float) $grade->nilai_pengetahuan, 2);
-                }
-            }
-            
-            $chartData[] = [
-                'id'    => $subject->id,
-                'label' => $subject->name,
-                'data'  => $dataPoints,
-            ];
-            
-            $subjectData[$subject->id] = [
-                'average' => $dataPoints,
-                'students'=> $studentPoints
-            ];
+        $classId = request('class_id');
+        if (!$classId && $classesTaught->isNotEmpty()) {
+            $classId = $classesTaught->first()->id;
         }
 
-        return view('guru.dashboard', compact('activeYear', 'chartLabels', 'chartData', 'subjectData', 'subjectsTaught', 'studentsTaught'));
+        $selectedClass = $classesTaught->where('id', $classId)->first();
+        
+        $students = collect();
+        $tableGrades = collect();
+        $chartLabels = [];
+        $chartData = [];
+        $subjectForClass = null;
+
+        if ($selectedClass) {
+            $students = $selectedClass->students()->where('is_active', true)->orderBy('name')->get();
+            $subjectsForClass = $assignments->where('school_class_id', $classId)->pluck('subject')->unique('id')->values();
+            $subjectForClass = $subjectsForClass->first(); // Pick the first subject taught in this class
+
+            if ($subjectForClass && $activePeriod) {
+                $tableGrades = Grade::where('subject_id', $subjectForClass->id)
+                    ->where('assessment_period_id', $activePeriod->id)
+                    ->whereIn('student_id', $students->pluck('id'))
+                    ->get()
+                    ->keyBy('student_id');
+            }
+
+            // Chart: Class average over last 4 periods
+            $periods = AssessmentPeriod::orderBy('id', 'desc')->take(4)->get()->reverse()->values();
+            $chartLabels = $periods->pluck('name')->toArray();
+            
+            if ($subjectForClass) {
+                foreach ($periods as $period) {
+                    $avg = Grade::where('subject_id', $subjectForClass->id)
+                        ->where('assessment_period_id', $period->id)
+                        ->whereIn('student_id', $students->pluck('id'))
+                        ->avg('nilai_pengetahuan');
+                    $chartData[] = $avg ? round((float) $avg, 2) : 0;
+                }
+            }
+        }
+
+        return view('guru.dashboard', compact(
+            'activeYear', 
+            'activePeriod', 
+            'classesTaught', 
+            'subjectsTaught', 
+            'selectedClass', 
+            'subjectForClass',
+            'students', 
+            'tableGrades',
+            'chartLabels',
+            'chartData'
+        ));
     }
 }
