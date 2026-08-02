@@ -12,14 +12,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .login-bg {
-            background: linear-gradient(135deg, #1b3932 0%, #255649 30%, #2d6b5a 60%, #3d8570 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #93c5fd 100%);
         }
         .login-card {
             backdrop-filter: blur(20px);
             background: rgba(255,255,255,0.97);
         }
         .brand-glow {
-            box-shadow: 0 0 40px rgba(61,133,112,0.4);
+            box-shadow: 0 0 40px rgba(147, 197, 253, 0.6);
         }
     </style>
 </head>
@@ -82,7 +82,7 @@
                                 </svg>
                             </span>
                             <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                class="w-full border border-slate-300 rounded-lg py-3 pl-11 pr-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2d6b5a] focus:border-transparent transition-all" placeholder="Masukkan username" autocomplete="username" required autofocus>
+                                class="w-full border border-slate-300 rounded-lg py-3 pl-11 pr-4 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all" placeholder="Masukkan username" autocomplete="username" required autofocus>
                         </div>
                     </div>
 
@@ -95,8 +95,8 @@
                                 </svg>
                             </span>
                             <input type="password" name="password" id="password"
-                                class="w-full border border-slate-300 rounded-lg py-3 pl-11 pr-11 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#2d6b5a] focus:border-transparent transition-all" placeholder="Masukkan password" autocomplete="current-password" required>
-                            <button type="button" id="togglePwd" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-[#2d6b5a] transition-colors">
+                                class="w-full border border-slate-300 rounded-lg py-3 pl-11 pr-11 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent transition-all" placeholder="Masukkan password" autocomplete="current-password" required>
+                            <button type="button" id="togglePwd" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-[#3b82f6] transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -106,11 +106,11 @@
                     </div>
 
                     <div class="flex items-center gap-2 pt-2">
-                        <input type="checkbox" name="remember" id="remember" class="w-4 h-4 rounded border-slate-300 text-[#2d6b5a] focus:ring-[#2d6b5a]">
+                        <input type="checkbox" name="remember" id="remember" class="w-4 h-4 rounded border-slate-300 text-[#2563eb] focus:ring-[#2563eb]">
                         <label for="remember" class="text-sm text-slate-600 cursor-pointer">Ingat saya</label>
                     </div>
 
-                    <button type="submit" id="loginBtn" class="w-full flex items-center justify-center gap-2 bg-[#2d6b5a] hover:bg-[#255649] text-white py-3.5 rounded-lg text-base font-semibold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                    <button type="submit" id="loginBtn" class="w-full flex items-center justify-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white py-3.5 rounded-lg text-base font-semibold transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
                         </svg>
