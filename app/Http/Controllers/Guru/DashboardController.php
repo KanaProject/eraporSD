@@ -38,11 +38,17 @@ class DashboardController extends Controller
         $chartLabels = [];
         $chartData = [];
         $subjectForClass = null;
+        $subjectsForClass = collect();
 
         if ($selectedClass) {
             $students = $selectedClass->students()->where('is_active', true)->orderBy('name')->get();
             $subjectsForClass = $assignments->where('school_class_id', $classId)->pluck('subject')->unique('id')->values();
-            $subjectForClass = $subjectsForClass->first(); // Pick the first subject taught in this class
+            
+            $subjectId = request('subject_id');
+            if (!$subjectId && $subjectsForClass->isNotEmpty()) {
+                $subjectId = $subjectsForClass->first()->id;
+            }
+            $subjectForClass = $subjectsForClass->where('id', $subjectId)->first();
 
             if ($subjectForClass && $activePeriod) {
                 $tableGrades = Grade::where('subject_id', $subjectForClass->id)
@@ -73,6 +79,7 @@ class DashboardController extends Controller
             'classesTaught', 
             'subjectsTaught', 
             'selectedClass', 
+            'subjectsForClass',
             'subjectForClass',
             'students', 
             'tableGrades',

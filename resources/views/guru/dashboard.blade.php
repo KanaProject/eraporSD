@@ -65,19 +65,33 @@
 
     <!-- Filter Bar -->
     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
-        <form method="GET" class="flex items-center gap-3 w-full md:w-auto">
-            <label class="font-bold text-slate-700 whitespace-nowrap">Pilih Kelas:</label>
-            <select name="class_id" class="form-select border-slate-300 rounded-lg shadow-sm focus:border-blue-600 focus:ring-blue-600 w-full md:w-48 bg-white font-medium text-slate-700" onchange="this.form.submit()">
-                @if($classesTaught->isEmpty())
-                    <option value="">Tidak ada kelas</option>
-                @else
-                    @foreach($classesTaught as $class)
-                        <option value="{{ $class->id }}" {{ ($selectedClass && $selectedClass->id == $class->id) ? 'selected' : '' }}>
-                            {{ $class->name }}
+        <form method="GET" class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <label class="font-bold text-slate-700 whitespace-nowrap">Pilih Kelas:</label>
+                <select name="class_id" class="form-select border-slate-300 rounded-lg shadow-sm focus:border-blue-600 focus:ring-blue-600 w-full sm:w-40 bg-white font-medium text-slate-700" onchange="this.form.submit()">
+                    @if($classesTaught->isEmpty())
+                        <option value="">Tidak ada kelas</option>
+                    @else
+                        @foreach($classesTaught as $class)
+                            <option value="{{ $class->id }}" {{ ($selectedClass && $selectedClass->id == $class->id) ? 'selected' : '' }}>
+                                {{ $class->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            @if($subjectsForClass->isNotEmpty())
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <label class="font-bold text-slate-700 whitespace-nowrap">Mapel:</label>
+                <select name="subject_id" class="form-select border-slate-300 rounded-lg shadow-sm focus:border-blue-600 focus:ring-blue-600 w-full sm:w-56 bg-white font-medium text-slate-700" onchange="this.form.submit()">
+                    @foreach($subjectsForClass as $subject)
+                        <option value="{{ $subject->id }}" {{ ($subjectForClass && $subjectForClass->id == $subject->id) ? 'selected' : '' }}>
+                            {{ $subject->name }}
                         </option>
                     @endforeach
-                @endif
-            </select>
+                </select>
+            </div>
+            @endif
         </form>
         <div class="w-full md:w-auto flex justify-end">
             <a href="{{ route('guru.grades.index') }}" class="inline-flex w-full md:w-auto items-center justify-center gap-2 px-6 py-2.5 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
@@ -88,14 +102,19 @@
     </div>
 
     <!-- Main Content Grid -->
-    <div class="flex flex-col xl:flex-row gap-6">
+    <div class="flex flex-col gap-6">
+        <!-- Chart -->
+        <div class="w-full bg-slate-50 rounded-xl shadow-md border border-slate-200 p-5 flex flex-col min-h-[350px]">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Grafik Nilai 1 tahun</h3>
+            <div class="relative w-full flex-1">
+                <canvas id="growthChart"></canvas>
+            </div>
+        </div>
+
         <!-- Table -->
-        <div class="w-full xl:w-2/3 bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+        <div class="w-full bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
             <div class="px-5 py-4 border-b border-slate-200 bg-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                 <h3 class="text-lg font-bold text-blue-900">Daftar Nilai Siswa {{ $selectedClass ? '- '.$selectedClass->name : '' }}</h3>
-                @if($subjectForClass)
-                    <span class="text-sm font-semibold px-3 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-100">{{ $subjectForClass->name }}</span>
-                @endif
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
@@ -149,14 +168,6 @@
                         @endforelse
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <!-- Chart -->
-        <div class="w-full xl:w-1/3 bg-slate-50 rounded-xl shadow-md border border-slate-200 p-5 flex flex-col h-full min-h-[350px]">
-            <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Grafik Nilai 1 tahun</h3>
-            <div class="relative w-full flex-1">
-                <canvas id="growthChart"></canvas>
             </div>
         </div>
     </div>
