@@ -34,17 +34,37 @@
     <input type="hidden" name="class_id" value="{{ $class->id }}">
     <input type="hidden" name="period_id" value="{{ $period->id }}">
 
-    <div class="card overflow-x-auto">
-        <div class="flex items-center justify-between mb-4">
-            <div class="text-sm text-slate-500">
-                Nilai: <span class="font-medium">1.00 – 100.00</span> (input 2 desimal) ·
-                Rapor: <span class="font-medium">dibulatkan</span> ·
-                Predikat berdasarkan <span class="font-medium">KKM per mapel</span>
+    <div class="card p-0 overflow-hidden">
+        <div class="flex items-center justify-between p-4 border-b border-slate-100 bg-white">
+            <div class="text-sm text-slate-500 hidden md:block">
+                Nilai: <span class="font-medium">1.00 – 100.00</span> ·
+                Rapor: <span class="font-medium">dibulatkan</span>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <a href="{{ route('guru.grades.index') }}" data-confirm="Apakah Anda yakin ingin kembali? Harap simpan dulu perubahan nilai." data-confirm-title="Kembali" data-confirm-type="warning" data-confirm-ok="Ya, Kembali" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 font-medium text-sm transition-colors shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                    Kembali
+                </a>
+
+                @if($period->is_active && $students->isNotEmpty())
+                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all shadow-sm hover:shadow hover:-translate-y-0.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                        Simpan Semua Nilai
+                    </button>
+                @elseif(!$period->is_active)
+                    <span class="text-sm text-red-600 font-medium flex items-center gap-1.5 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                        Periode Terkunci
+                    </span>
+                @endif
             </div>
         </div>
-        <table class="w-full text-sm">
-            <thead>
-                <tr class="border-b-2 border-slate-200">
+
+        <div class="overflow-y-auto overflow-x-auto max-h-[60vh] relative">
+            <table class="w-full text-sm">
+                <thead class="sticky top-0 z-10 shadow-sm bg-white outline outline-1 outline-slate-200">
+                <tr>
                     <th class="text-left py-3 px-3 font-semibold text-slate-600 w-8">#</th>
                     <th class="text-left py-3 px-3 font-semibold text-slate-600">Nama Siswa</th>
                     <th class="text-center py-3 px-2 font-semibold text-slate-600 min-w-[90px]">
@@ -63,11 +83,11 @@
                         <div>Praktek</div>
                         <div class="text-xs font-normal text-slate-400">Ujian Praktek</div>
                     </th>
-                    <th class="text-center py-3 px-2 font-semibold text-emerald-700 min-w-[90px] bg-emerald-50/50">
+                    <th class="text-center py-3 px-2 font-semibold text-emerald-700 min-w-[90px] bg-emerald-50">
                         <div>{{ $period->labelPengetahuan() }}</div>
                         <div class="text-xs font-normal text-slate-400">Auto-hitung</div>
                     </th>
-                    <th class="text-center py-3 px-2 font-semibold text-emerald-700 min-w-[90px] bg-emerald-50/50">
+                    <th class="text-center py-3 px-2 font-semibold text-emerald-700 min-w-[90px] bg-emerald-50">
                         <div>{{ $period->labelKeterampilan() }}</div>
                         <div class="text-xs font-normal text-slate-400">= Praktek</div>
                     </th>
@@ -106,31 +126,13 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
 
         @if($students->isNotEmpty())
-        <div class="mt-4 pb-4">
-            {{ $students->links() }}
-        </div>
-        <div class="flex flex-col md:flex-row justify-between items-center mt-4 pt-4 border-t border-slate-100 gap-4">
-            <span class="text-xs text-slate-400">{{ $students->total() }} total siswa · Nilai disimpan otomatis ke database</span>
-            
-            <div class="flex items-center gap-3">
-                <a href="{{ route('guru.grades.index') }}" data-confirm="Apakah Anda yakin ingin kembali? Harap simpan dulu perubahan nilai jika belum disimpan agar tidak hilang." data-confirm-title="Peringatan Belum Disimpan" data-confirm-type="warning" data-confirm-ok="Ya, Kembali" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 font-medium text-sm transition-colors shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                    Kembali
-                </a>
-
-                @if($period->is_active)
-                    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all shadow hover:shadow-md hover:-translate-y-0.5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                        Simpan Semua Nilai
-                    </button>
-                @else
-                    <span class="text-sm text-red-600 font-medium flex items-center gap-1.5 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
-                        Periode Terkunci
-                    </span>
-                @endif
+        <div class="p-4 border-t border-slate-100 bg-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
+            <span class="text-xs text-slate-400">{{ $students->total() }} total siswa · Pastikan menekan tombol Simpan Semua Nilai di bagian atas.</span>
+            <div class="mt-0">
+                {{ $students->links() }}
             </div>
         </div>
         @endif

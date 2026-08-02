@@ -28,6 +28,25 @@
     <input type="hidden" name="period_id" value="{{ $period->id }}">
     
     <div class="card p-0 overflow-hidden">
+        @if($students->isNotEmpty())
+        <div class="flex justify-between items-center p-4 border-b border-slate-100 bg-white">
+            <div class="text-sm text-slate-500">
+                Total Siswa: <span class="font-semibold text-slate-700">{{ $students->count() }}</span>
+            </div>
+            @if($period->is_active)
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all shadow-sm hover:shadow hover:-translate-y-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    Simpan Catatan
+                </button>
+            @else
+                <span class="text-sm text-red-600 font-medium flex items-center gap-1.5 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+                    Periode Terkunci
+                </span>
+            @endif
+        </div>
+        @endif
+
         <div class="overflow-y-auto max-h-[60vh] relative">
             <table class="w-full text-sm">
                 <thead class="sticky top-0 z-10 shadow-sm">
@@ -58,18 +77,8 @@
         </table>
 
         @if($students->isNotEmpty())
-        <div class="flex justify-end mt-4 p-4 border-t border-slate-100 bg-white">
-            @if($period->is_active)
-                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all shadow hover:shadow-md hover:-translate-y-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-                    Simpan Catatan
-                </button>
-            @else
-                <span class="text-sm text-red-600 font-medium flex items-center gap-1.5 bg-red-50 px-3 py-1.5 rounded-lg border border-red-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
-                    Periode Terkunci
-                </span>
-            @endif
+        <div class="p-4 border-t border-slate-100 bg-slate-50 text-xs text-slate-400 text-center">
+            Pastikan menekan tombol Simpan Catatan di bagian atas setelah selesai menginput.
         </div>
         @endif
         </div>
