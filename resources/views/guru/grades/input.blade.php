@@ -64,7 +64,7 @@
                 @forelse($students as $i => $student)
                 @php $grade = $grades->get($student->id); @endphp
                 <tr class="border-b border-slate-100 hover:bg-slate-50/50">
-                    <td class="py-2 px-3 text-slate-400 text-xs">{{ $i+1 }}</td>
+                    <td class="py-2 px-3 text-slate-400 text-xs">{{ $students->firstItem() + $i }}</td>
                     <td class="py-2 px-3">
                         <div class="font-medium text-slate-800">{{ $student->name }}</div>
                         <div class="text-xs text-slate-400">{{ $student->nis ?? '-' }}</div>
