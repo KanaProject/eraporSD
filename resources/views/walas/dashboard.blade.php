@@ -38,6 +38,75 @@
     </div>
 </div>
 
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <!-- Card Top 10 -->
+    <div class="card bg-white h-full border border-slate-200 shadow-sm flex flex-col">
+        <h3 class="card-title mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+            Ranking 10 Besar ({{ $activePeriod?->name ?? 'Periode Aktif' }})
+        </h3>
+        <div class="overflow-x-auto flex-1">
+            <table class="w-full text-sm text-left">
+                <thead class="text-xs text-slate-500 uppercase bg-slate-50">
+                    <tr>
+                        <th class="px-4 py-3 border-b border-slate-200 w-12 text-center">No</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Nama Siswa</th>
+                        <th class="px-4 py-3 border-b border-slate-200 w-24 text-center">Rata-rata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($top10 as $index => $row)
+                        <tr class="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+                            <td class="px-4 py-2 text-center font-bold {{ $index < 3 ? 'text-amber-500 text-base' : 'text-slate-500' }}">{{ $index + 1 }}</td>
+                            <td class="px-4 py-2 font-medium text-slate-800">{{ $row['student']->name }}</td>
+                            <td class="px-4 py-2 text-center font-bold text-primary-600">{{ $row['avg'] }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="px-4 py-6 text-center text-slate-500 bg-slate-50/50">Belum ada data nilai pada periode ini.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Card Bintang Kelas per Mapel -->
+    <div class="card bg-white h-full border border-slate-200 shadow-sm flex flex-col">
+        <h3 class="card-title mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+            Bintang Kelas Per Mapel ({{ $activePeriod?->name ?? 'Periode Aktif' }})
+        </h3>
+        <div class="overflow-x-auto flex-1">
+            <table class="w-full text-sm text-left">
+                <thead class="text-xs text-slate-500 uppercase bg-slate-50">
+                    <tr>
+                        <th class="px-4 py-3 border-b border-slate-200">Mata Pelajaran</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Nama Siswa</th>
+                        <th class="px-4 py-3 border-b border-slate-200 w-24 text-center">Tertinggi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($subjectStars as $row)
+                        <tr class="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors">
+                            <td class="px-4 py-2 font-medium text-slate-700">{{ $row['subject']->name }}</td>
+                            <td class="px-4 py-2 font-semibold text-slate-900 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                                <span class="truncate max-w-[140px] xl:max-w-xs" title="{{ $row['student']->name }}">{{ $row['student']->name }}</span>
+                            </td>
+                            <td class="px-4 py-2 text-center font-bold text-indigo-600">{{ $row['score'] }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="px-4 py-6 text-center text-slate-500 bg-slate-50/50">Belum ada data nilai pada periode ini.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <div class="card mb-6">
     <h3 class="card-title mb-4">Grafik Pertumbuhan Rata-Rata Kelas</h3>
     <div class="h-72"><canvas id="classAvgChart"></canvas></div>

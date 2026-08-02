@@ -95,10 +95,49 @@ class DashboardController extends Controller
                 }
             }
         }
+        
+        $activePeriod = AssessmentPeriod::getActive();
+        $top10 = [];
+        $subjectStars = [];
+        
+        if ($activePeriod) {
+            $rankingData = [];
+            foreach ($students as $s) {
+                if (isset($studentData[$s->id][$activePeriod->id]['avg'])) {
+                    $rankingData[] = [
+                        'student' => $s,
+                        'avg' => $studentData[$s->id][$activePeriod->id]['avg']
+                    ];
+                }
+            }
+            usort($rankingData, function($a, $b) {
+                return $b['avg'] <=> $a['avg'];
+            });
+            $top10 = array_slice($rankingData, 0, 10);
+            
+            foreach ($subjects as $sub) {
+                $highestVal = -1;
+                $topStudent = null;
+                foreach ($students as $s) {
+                    $val = $studentSubjectData[$s->id][$sub->id][$activePeriod->id] ?? null;
+                    if ($val !== null && $val > $highestVal) {
+                        $highestVal = $val;
+                        $topStudent = $s;
+                    }
+                }
+                if ($topStudent) {
+                    $subjectStars[] = [
+                        'subject' => $sub,
+                        'student' => $topStudent,
+                        'score' => $highestVal
+                    ];
+                }
+            }
+        }
 
         return view('walas.dashboard', compact(
-            'myClasses', 'myClass', 'activeYear', 'periods', 'students', 'subjects',
-            'classData', 'studentData', 'studentSubjectData'
+            'myClasses', 'myClass', 'activeYear', 'activePeriod', 'periods', 'students', 'subjects',
+            'classData', 'studentData', 'studentSubjectData', 'top10', 'subjectStars'
         ));
     }
 }
