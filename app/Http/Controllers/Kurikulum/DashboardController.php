@@ -26,7 +26,7 @@ class DashboardController extends Controller
         
         $activeYear = AcademicYear::getActive();
         
-        $periods = AssessmentPeriod::orderBy('start_date', 'desc')->get();
+        $periods = AssessmentPeriod::orderBy('id', 'asc')->get();
         $periodId = $request->period_id;
         $selectedPeriod = $periodId ? AssessmentPeriod::find($periodId) : AssessmentPeriod::getActive();
 
