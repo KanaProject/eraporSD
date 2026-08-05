@@ -76,9 +76,6 @@
 <!-- ===== HERO ===== -->
 <section class="relative z-10 px-6 md:px-12 pt-4 pb-10">
     <div class="max-w-5xl mx-auto text-center mb-10">
-        <p class="inline-block text-xs font-bold text-blue-200 tracking-widest uppercase bg-white/10 border border-white/20 px-3 py-1 rounded-full mb-4">
-            TA {{ $activeYear->name ?? '-' }} &mdash; {{ $activePeriod->name ?? 'Belum Ada Periode Aktif' }}
-        </p>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight drop-shadow-lg mb-4">
             Sistem Pengelolaan<br><span class="text-blue-200">Data Nilai Siswa</span>
         </h1>
