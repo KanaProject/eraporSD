@@ -74,14 +74,15 @@
     <thead>
         <tr>
             <th rowspan="2" width="5%">No</th>
-            <th rowspan="2" width="37%">Mata Pelajaran</th>
-            <th rowspan="2" width="10%">KKTP</th>
+            <th rowspan="2" width="30%">Mata Pelajaran</th>
+            <th rowspan="2" width="9%">KKTP</th>
             <th colspan="3">Nilai</th>
+            <th rowspan="2" width="14%">Predikat</th>
         </tr>
         <tr>
-            <th width="16%">{{ $period->labelPengetahuan() }}</th>
-            <th width="16%">{{ $period->labelKeterampilan() }}</th>
-            <th width="16%">Rata- Rata</th>
+            <th width="14%">{{ $period->labelPengetahuan() }}</th>
+            <th width="14%">{{ $period->labelKeterampilan() }}</th>
+            <th width="14%">Rata- Rata</th>
         </tr>
     </thead>
     <tbody>
@@ -107,6 +108,7 @@
                     elseif ($nk !== null) { $avgSubj = round($nk); }
                     if ($avgSubj !== null) { $sumAvg += $avgSubj; $countAvg++; }
                 @endphp
+                @php $predikat = $avgSubj !== null ? ($avgSubj >= $kkm ? 'Tuntas' : 'Belum Tuntas') : '-'; @endphp
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td>{{ $main->name }}</td>
@@ -114,12 +116,13 @@
                     <td class="text-center">{{ $np !== null ? round($np) : '-' }}</td>
                     <td class="text-center">{{ $nk !== null ? round($nk) : '-' }}</td>
                     <td class="text-center">{{ $avgSubj !== null ? $avgSubj : '-' }}</td>
+                    <td class="text-center" style="font-weight:600; color: {{ $avgSubj !== null ? ($avgSubj >= $kkm ? '#15803d' : '#dc2626') : '#6b7280' }};">{{ $predikat }}</td>
                 </tr>
             @else
                 <tr>
                     <td class="text-center">{{ $no++ }}</td>
                     <td>{{ $main->name }}</td>
-                    <td colspan="4" style="background-color: #e5e7eb;"></td>
+                    <td colspan="5" style="background-color: #e5e7eb;"></td>
                 </tr>
                 @php $childChar = 'a'; @endphp
                 @foreach($main->children as $child)
@@ -137,6 +140,7 @@
                         elseif ($nk !== null) { $avgSubj = round($nk); }
                         if ($avgSubj !== null) { $sumAvg += $avgSubj; $countAvg++; }
                     @endphp
+                    @php $predikat = $avgSubj !== null ? ($avgSubj >= $kkm ? 'Tuntas' : 'Belum Tuntas') : '-'; @endphp
                     <tr>
                         <td class="text-center"></td>
                         <td>{{ $childChar++ }}. {{ $child->name }}</td>
@@ -144,6 +148,7 @@
                         <td class="text-center">{{ $np !== null ? round($np) : '-' }}</td>
                         <td class="text-center">{{ $nk !== null ? round($nk) : '-' }}</td>
                         <td class="text-center">{{ $avgSubj !== null ? $avgSubj : '-' }}</td>
+                        <td class="text-center" style="font-weight:600; color: {{ $avgSubj !== null ? ($avgSubj >= $kkm ? '#15803d' : '#dc2626') : '#6b7280' }};">{{ $predikat }}</td>
                     </tr>
                 @endforeach
             @endif
@@ -153,6 +158,7 @@
             <td class="text-center">{{ $countP > 0 ? number_format(round($sumP / $countP, 2), 2, ',', '.') : '-' }}</td>
             <td class="text-center">{{ $countK > 0 ? number_format(round($sumK / $countK, 2), 2, ',', '.') : '-' }}</td>
             <td class="text-center">{{ $countAvg > 0 ? number_format(round($sumAvg / $countAvg, 2), 2, ',', '.') : '-' }}</td>
+            <td class="text-center"></td>
         </tr>
     </tbody>
 </table>
