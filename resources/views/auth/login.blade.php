@@ -174,16 +174,9 @@
 
     </div>
 
-    <!-- CTA Button -->
+    <!-- Copyright -->
     <div class="max-w-5xl mx-auto mt-8 text-center">
-        <button onclick="openModal()"
-            class="inline-flex items-center gap-3 bg-white text-blue-800 font-extrabold text-base px-8 py-4 rounded-2xl shadow-2xl hover:shadow-blue-900/40 hover:-translate-y-1 transition-all active:scale-95">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
-            </svg>
-            Masuk ke Sistem E-Rapor
-        </button>
-        <p class="text-blue-200 text-xs mt-3 opacity-70">© {{ date('Y') }} E-Rapor. {{ $school->name ?? 'Sistem Manajemen Rapor' }}.</p>
+        <p class="text-blue-200 text-xs opacity-70">© {{ date('Y') }} E-Rapor. {{ $school->name ?? 'Sistem Manajemen Rapor' }}.</p>
     </div>
 </section>
 
