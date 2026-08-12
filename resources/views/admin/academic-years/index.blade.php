@@ -1,11 +1,11 @@
 <x-layouts.admin title="Tahun Ajaran & Periode">
 
-<div class="page-header flex items-center justify-between">
+<div class="page-header flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
         <h2 class="page-title">Tahun Ajaran & Periode</h2>
         <p class="page-subtitle">Kelola tahun ajaran, semester, dan periode penilaian</p>
     </div>
-    <a href="{{ route('admin.academic-years.create') }}" class="btn-primary">
+    <a href="{{ route('admin.academic-years.create') }}" class="btn-primary w-full md:w-auto justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
         Tambah Tahun Ajaran
     </a>
