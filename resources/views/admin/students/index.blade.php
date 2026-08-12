@@ -16,81 +16,82 @@
     </div>
 </div>
 <div class="card">
-    <form method="GET" class="flex gap-3 mb-4 flex-wrap">
-        <input type="text" name="search" value="{{ request('search') }}" class="form-input max-w-xs" placeholder="Cari nama / NIS...">
-        <select name="status" class="form-select w-32">
-            <option value="aktif" {{ request('status', 'aktif') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-            <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Non-Aktif</option>
-            <option value="semua" {{ request('status') == 'semua' ? 'selected' : '' }}>Semua</option>
-        </select>
-        <select name="class_id" class="form-select w-36">
-            <option value="">Semua Kelas</option>
-            @foreach($classes as $class)
-            <option value="{{ $class->id }}" {{ request('class_id') == $class->id ? 'selected' : '' }}>Kelas {{ $class->name }}</option>
-            @endforeach
-        </select>
-        <button type="submit" class="btn-primary">Cari</button>
-        <a href="{{ route('admin.students.index') }}" class="btn-secondary">Reset</a>
+    <form method="GET" class="flex flex-col md:flex-row gap-3 mb-4">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-input w-full md:max-w-xs" placeholder="Cari nama / NIS...">
+        <div class="flex flex-row gap-2 w-full md:w-auto">
+            <select name="status" class="form-select flex-1 sm:flex-none w-full sm:w-32">
+                <option value="aktif" {{ request('status', 'aktif') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Non-Aktif</option>
+                <option value="semua" {{ request('status') == 'semua' ? 'selected' : '' }}>Semua</option>
+            </select>
+            <select name="class_id" class="form-select flex-1 sm:flex-none w-full sm:w-36">
+                <option value="">Semua Kelas</option>
+                @foreach($classes as $class)
+                <option value="{{ $class->id }}" {{ request('class_id') == $class->id ? 'selected' : '' }}>Kelas {{ $class->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="flex gap-2 w-full md:w-auto">
+            <button type="submit" class="btn-primary flex-1 md:flex-none justify-center">Cari</button>
+            <a href="{{ route('admin.students.index') }}" class="btn-secondary flex-1 md:flex-none justify-center">Reset</a>
+        </div>
     </form>
     <div class="overflow-x-auto">
         <table class="data-table">
-            <thead><tr><th>Nama Siswa</th><th>NIS</th><th>L/P</th><th>Kelas</th><th class="text-right">Aksi</th></tr></thead>
+            <thead>
+                <tr>
+                    <th>Nama Siswa</th>
+                    <th class="hidden md:table-cell">NIS</th>
+                    <th class="hidden md:table-cell">L/P</th>
+                    <th class="hidden md:table-cell">Kelas</th>
+                    <th class="hidden md:table-cell text-right">Aksi</th>
+                </tr>
+            </thead>
             <tbody>
                 @forelse($students as $student)
                 <tr>
                     <td class="font-medium">
-                        {{ $student->name }}
-                        @if(!$student->is_active)
-                        <span class="badge badge-error ml-2 text-xs">Non-Aktif</span>
-                        @endif
-                    </td>
-                    <td class="text-slate-500">{{ $student->nis ?? '-' }}</td>
-                    <td><span class="badge {{ $student->gender === 'L' ? 'badge-info' : 'badge-warning' }}">{{ $student->gender }}</span></td>
-                    <td>{{ $student->schoolClass?->name ?? '-' }}</td>
-                    <td class="text-right">
-                        <div class="flex justify-end gap-1">
-                            @if($student->is_active)
-                            <button type="button" class="btn-icon" title="Edit" 
-                                data-student="{{ json_encode([
-                                    'id' => $student->id,
-                                    'name' => $student->name,
-                                    'nis' => $student->nis,
-                                    'nisn' => $student->nisn,
-                                    'gender' => $student->gender,
-                                    'class_id' => $student->school_class_id,
-                                    'birth_place' => $student->birth_place,
-                                    'birth_date' => $student->birth_date ? $student->birth_date->format('Y-m-d') : '',
-                                    'religion' => $student->religion,
-                                    'parent_name' => $student->parent_name,
-                                    'parent_phone' => $student->parent_phone,
-                                    'address' => $student->address
-                                ]) }}"
-                                onclick="editStudent(this)">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z"/></svg>
+                        <div class="flex items-center gap-2">
+                            <button type="button" class="md:hidden w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center shrink-0 transition-colors" onclick="toggleRow('row-{{ $student->id }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" id="icon-{{ $student->id }}"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
                             </button>
-                            <form method="POST" action="{{ route('admin.students.destroy', $student) }}" class="inline"
-                                data-confirm="Nonaktifkan {{ $student->name }} dari sistem?"
-                                data-confirm-title="Nonaktifkan Siswa"
-                                data-confirm-type="danger"
-                                data-confirm-ok="Ya, Nonaktifkan">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-icon text-red-500 hover:text-red-700 hover:bg-red-50" title="Non-Aktifkan">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
-                                </button>
-                            </form>
-                            @else
-                            <form method="POST" action="{{ route('admin.students.toggle', $student) }}" class="inline"
-                                data-confirm="Aktifkan kembali {{ $student->name }} ke dalam sistem?"
-                                data-confirm-title="Aktifkan Siswa"
-                                data-confirm-type="success"
-                                data-confirm-ok="Ya, Aktifkan">
-                                @csrf
-                                <button type="submit" class="btn-icon text-green-500 hover:text-green-700 hover:bg-green-50" title="Aktifkan Kembali">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                </button>
-                            </form>
-                            @endif
+                            <div>
+                                <span>{{ $student->name }}</span>
+                                @if(!$student->is_active)
+                                <span class="badge badge-error ml-2 text-xs">Non-Aktif</span>
+                                @endif
+                            </div>
+                        </div>
+                    </td>
+                    <td class="hidden md:table-cell text-slate-500">{{ $student->nis ?? '-' }}</td>
+                    <td class="hidden md:table-cell"><span class="badge {{ $student->gender === 'L' ? 'badge-info' : 'badge-warning' }}">{{ $student->gender }}</span></td>
+                    <td class="hidden md:table-cell">{{ $student->schoolClass?->name ?? '-' }}</td>
+                    <td class="hidden md:table-cell text-right">
+                        @include('admin.students.partials.actions', ['student' => $student])
+                    </td>
+                </tr>
+                {{-- Hidden Row for Mobile --}}
+                <tr id="row-{{ $student->id }}" class="hidden md:hidden bg-slate-50 border-b border-slate-100">
+                    <td colspan="1" class="px-4 py-3">
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-slate-200 pb-2">
+                                <span class="text-slate-500">NIS</span>
+                                <span class="font-medium text-slate-700">{{ $student->nis ?? '-' }}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 pb-2">
+                                <span class="text-slate-500">L/P</span>
+                                <span class="badge {{ $student->gender === 'L' ? 'badge-info' : 'badge-warning' }}">{{ $student->gender }}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 pb-2">
+                                <span class="text-slate-500">Kelas</span>
+                                <span class="text-slate-700">{{ $student->schoolClass?->name ?? '-' }}</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-1">
+                                <span class="text-slate-500">Aksi</span>
+                                <div>
+                                    @include('admin.students.partials.actions', ['student' => $student])
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -359,6 +360,20 @@
             form.elements['parent_phone'].value = data.parent_phone || '';
             form.elements['address'].value = data.address || '';
             openModal('modal-edit-student');
+        }
+
+        function toggleRow(id) {
+            const row = document.getElementById(id);
+            const icon = document.getElementById(id.replace('row-', 'icon-'));
+            if (row.classList.contains('hidden')) {
+                row.classList.remove('hidden');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />';
+                icon.classList.add('text-red-500');
+            } else {
+                row.classList.add('hidden');
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />';
+                icon.classList.remove('text-red-500');
+            }
         }
     </script>
     @endpush
