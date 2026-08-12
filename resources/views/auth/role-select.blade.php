@@ -16,9 +16,14 @@
         <!-- Header -->
         <div class="bg-gradient-to-r from-blue-700 to-blue-800 px-8 py-6">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center border border-white/30">
-                    <span class="text-white font-bold">iR</span>
-                </div>
+                @php $school = \App\Models\School::first(); @endphp
+                @if($school && $school->logo_path)
+                    <img src="{{ Storage::url($school->logo_path) }}" alt="Logo" class="w-10 h-10 object-contain rounded-xl border border-white/30 bg-white/10 shrink-0">
+                @else
+                    <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center border border-white/30 shrink-0">
+                        <span class="text-white font-bold">{{ substr($school->name ?? 'ER', 0, 1) }}</span>
+                    </div>
+                @endif
                 <div>
                     <h1 class="text-lg font-bold text-white">E-Rapor</h1>
                     <p class="text-white/70 text-xs">Pilih Mode Masuk</p>
