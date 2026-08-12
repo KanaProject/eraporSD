@@ -5,14 +5,14 @@
         <h2 class="page-title">Manajemen Pengguna</h2>
         <p class="page-subtitle">Kelola akun guru, wali kelas, dan staff kurikulum</p>
     </div>
-    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-        <button type="button" onclick="openModal('modal-import-user')" class="btn-secondary flex items-center justify-center gap-2 w-full sm:w-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-            Import Excel
+    <div class="flex flex-row gap-2 w-full sm:w-auto">
+        <button type="button" onclick="openModal('modal-import-user')" class="btn-secondary flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 text-xs sm:text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+            <span class="truncate">Import</span>
         </button>
-        <button type="button" onclick="openCreateModal()" class="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
-            Tambah Pengguna
+        <button type="button" onclick="openCreateModal()" class="btn-primary flex-1 sm:flex-none flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 text-xs sm:text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+            <span class="truncate">Tambah</span>
         </button>
     </div>
 </div>
@@ -21,13 +21,13 @@
     <!-- Filters -->
     <form method="GET" class="flex flex-col md:flex-row gap-3 mb-4">
         <input type="text" name="search" value="{{ request('search') }}" class="form-input w-full md:max-w-xs" placeholder="Cari nama / username...">
-        <div class="flex flex-wrap sm:flex-nowrap gap-3 w-full md:w-auto">
-            <select name="status" class="form-select w-full sm:w-32">
+        <div class="flex flex-row gap-2 w-full md:w-auto">
+            <select name="status" class="form-select flex-1 sm:flex-none w-full sm:w-32">
                 <option value="aktif"   {{ request('status', 'aktif') == 'aktif'    ? 'selected' : '' }}>Aktif</option>
                 <option value="nonaktif" {{ request('status') == 'nonaktif'         ? 'selected' : '' }}>Non-Aktif</option>
                 <option value="semua"   {{ request('status') == 'semua'             ? 'selected' : '' }}>Semua</option>
             </select>
-            <select name="role" class="form-select w-full sm:w-40">
+            <select name="role" class="form-select flex-1 sm:flex-none w-full sm:w-40">
                 <option value="">Semua Peran</option>
                 @foreach($roles as $role)
                 <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>{{ ucfirst($role->name) }}</option>
