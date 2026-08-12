@@ -1,16 +1,16 @@
 <x-layouts.admin title="Manajemen Pengguna">
 
-<div class="page-header flex items-center justify-between">
+<div class="page-header flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
         <h2 class="page-title">Manajemen Pengguna</h2>
         <p class="page-subtitle">Kelola akun guru, wali kelas, dan staff kurikulum</p>
     </div>
-    <div class="flex gap-2">
-        <button type="button" onclick="openModal('modal-import-user')" class="btn-secondary flex items-center gap-2">
+    <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+        <button type="button" onclick="openModal('modal-import-user')" class="btn-secondary flex items-center justify-center gap-2 w-full sm:w-auto">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
             Import Excel
         </button>
-        <button type="button" onclick="openCreateModal()" class="btn-primary flex items-center gap-2">
+        <button type="button" onclick="openCreateModal()" class="btn-primary flex items-center justify-center gap-2 w-full sm:w-auto">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
             Tambah Pengguna
         </button>

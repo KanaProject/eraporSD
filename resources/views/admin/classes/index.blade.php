@@ -1,7 +1,7 @@
 <x-layouts.admin title="Manajemen Kelas">
-<div class="page-header flex items-center justify-between">
+<div class="page-header flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div><h2 class="page-title">Manajemen Kelas</h2><p class="page-subtitle">Kelas aktif di sekolah</p></div>
-    <a href="{{ route('admin.classes.create') }}" class="btn-primary">
+    <a href="{{ route('admin.classes.create') }}" class="btn-primary w-full md:w-auto justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
         Tambah Kelas
     </a>

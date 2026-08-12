@@ -1,10 +1,10 @@
 <x-layouts.admin title="Manajemen Kurikulum">
-    <div class="page-header flex items-center justify-between">
+    <div class="page-header flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
             <h2 class="page-title">Manajemen Kurikulum</h2>
             <p class="page-subtitle">Kelola data master kurikulum yang digunakan di sekolah</p>
         </div>
-        <button type="button" class="btn-primary" onclick="openModal('modal-create-curriculum')">
+        <button type="button" class="btn-primary w-full md:w-auto justify-center" onclick="openModal('modal-create-curriculum')">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
             Tambah Kurikulum
         </button>
