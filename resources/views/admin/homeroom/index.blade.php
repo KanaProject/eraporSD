@@ -8,9 +8,14 @@
 @else
 <div class="space-y-8">
     @foreach($classes as $level => $levelClasses)
-    <div>
-        <h3 class="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2">Tingkat {{ $level }}</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="bg-slate-50/50 rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <button type="button" class="w-full flex items-center justify-between p-4 bg-white hover:bg-slate-50 transition-colors border-b border-slate-200" onclick="toggleTingkat('tingkat-{{ $level }}', this)">
+            <h3 class="text-lg font-bold text-slate-800">Tingkat {{ $level }}</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-500 transition-transform duration-200 icon-arrow" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+        </button>
+        <div id="tingkat-{{ $level }}" class="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach($levelClasses as $class)
             @php $currentWalas = $class->homeroomAssignments->first(); @endphp
             <div class="card p-4 hover:shadow-card-hover transition-shadow flex flex-col justify-between">
@@ -48,4 +53,18 @@
     @endforeach
 </div>
 @endif
+
+<script>
+function toggleTingkat(id, btn) {
+    const content = document.getElementById(id);
+    const icon = btn.querySelector('.icon-arrow');
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.classList.remove('-rotate-90');
+    } else {
+        content.classList.add('hidden');
+        icon.classList.add('-rotate-90');
+    }
+}
+</script>
 </x-layouts.admin>
