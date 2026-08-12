@@ -20,10 +20,13 @@ class TeacherSubjectController extends Controller
         $teachers   = User::role('guru')->where('is_active', true)->orderBy('name')->get();
         $subjects   = Subject::whereHas('subjectGradeConfigs', function($q) use ($gradeLevel) {
             $q->where('grade_level', $gradeLevel);
-        })->where('is_active', true)->orderBy('group')->orderBy('sort_order')->get();
+        })->where('is_active', true)->whereDoesntHave('children')->orderBy('group')->orderBy('sort_order')->get();
         // existing assignments for this grade
         $assignments = TeacherSubjectAssignment::whereIn('school_class_id', $classes->pluck('id'))
             ->where('academic_year_id', $activeYear?->id)
+            ->whereHas('subject', function($q) {
+                $q->where('is_active', true)->whereDoesntHave('children');
+            })
             ->get()
             ->groupBy(fn($a) => $a->subject_id.'_'.$a->school_class_id);
 

@@ -14,8 +14,9 @@ class SubjectGradeConfigController extends Controller
     {
         $gradeLevel = $request->get('grade', 1);
         
-        // Get all master subjects
+        // Get all master subjects (exclude parent subjects that have children)
         $subjects = Subject::where('is_active', true)
+                           ->whereDoesntHave('children')
                            ->orderBy('group')
                            ->orderBy('sort_order')
                            ->get();

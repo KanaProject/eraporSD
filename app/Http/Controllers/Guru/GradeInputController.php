@@ -23,6 +23,9 @@ class GradeInputController extends Controller
 
         $assignments = TeacherSubjectAssignment::where('user_id', $user->id)
             ->where('academic_year_id', $activeYear?->id)
+            ->whereHas('subject', function($q) {
+                $q->where('is_active', true)->whereDoesntHave('children');
+            })
             ->with(['subject', 'schoolClass'])
             ->get();
 
