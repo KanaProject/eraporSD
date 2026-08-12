@@ -60,19 +60,19 @@
                             
                             <!-- Bobots -->
                             <div class="flex flex-row gap-4 w-full lg:w-auto">
-                                <div class="flex flex-col lg:flex-row items-start lg:items-center gap-1 lg:gap-2 w-1/2 lg:w-auto">
+                                <div class="flex flex-col lg:flex-row items-start lg:items-center gap-1 lg:gap-2 flex-1 lg:flex-none">
                                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide lg:shrink-0">Bobot UH</span>
                                     <div class="flex items-center gap-2 w-full lg:w-auto">
                                         <input type="number" name="configs[{{ $subject->id }}][bobot_uh]" value="{{ $config->bobot_uh ?? 50 }}"
-                                            class="form-input text-sm font-medium py-1.5 px-3 w-full lg:w-20 text-center input-bobot-uh config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
+                                            class="form-input text-sm font-medium py-1.5 px-3 flex-1 w-0 lg:w-20 lg:flex-none text-center input-bobot-uh config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
                                         <span class="text-xs text-slate-400 font-medium shrink-0 lg:w-4">%</span>
                                     </div>
                                 </div>
-                                <div class="flex flex-col lg:flex-row items-start lg:items-center gap-1 lg:gap-2 w-1/2 lg:w-auto">
+                                <div class="flex flex-col lg:flex-row items-start lg:items-center gap-1 lg:gap-2 flex-1 lg:flex-none">
                                     <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide lg:shrink-0">Bobot Teori</span>
                                     <div class="flex items-center gap-2 w-full lg:w-auto">
                                         <input type="number" name="configs[{{ $subject->id }}][bobot_teori]" value="{{ $config->bobot_teori ?? 50 }}"
-                                            class="form-input text-sm font-medium py-1.5 px-3 w-full lg:w-20 text-center input-bobot-teori config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
+                                            class="form-input text-sm font-medium py-1.5 px-3 flex-1 w-0 lg:w-20 lg:flex-none text-center input-bobot-teori config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
                                         <span class="text-xs text-slate-400 font-medium shrink-0 lg:w-4">%</span>
                                     </div>
                                 </div>
