@@ -1,17 +1,17 @@
 <x-layouts.walas title="Catatan Wali Kelas">
     <!-- Header -->
-    <div class="bg-gradient-to-r from-indigo-900 to-blue-700 rounded-xl shadow-lg p-6 mb-6 text-white flex flex-col lg:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="bg-gradient-to-r from-indigo-900 to-blue-700 rounded-xl shadow-lg p-4 sm:p-6 mb-6 text-white flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+        <div class="flex items-center gap-3 sm:gap-4 w-full">
+            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/20 border-2 border-white/30 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 sm:w-8 sm:h-8 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
                 </svg>
             </div>
-            <div>
-                <h2 class="text-2xl font-bold mb-1">Catatan Wali Kelas</h2>
-                <div class="flex flex-wrap items-center gap-2 text-sm text-indigo-100 mt-1">
+            <div class="flex-1 min-w-0">
+                <h2 class="text-xl sm:text-2xl font-bold mb-1 truncate">Catatan Wali Kelas</h2>
+                <div class="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 text-sm text-indigo-100 mt-1">
                     <span class="bg-indigo-900/50 px-2.5 py-1 rounded-md font-medium border border-indigo-500/50">Kelas {{ $myClass->name }}</span>
-                    <select onchange="window.location.href=this.value" class="bg-indigo-900/50 text-indigo-50 border border-indigo-500/50 rounded-md px-2.5 py-1 pr-8 outline-none focus:ring-2 focus:ring-indigo-400 text-sm font-medium cursor-pointer appearance-none hover:bg-indigo-800/50 transition-colors" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e7ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
+                    <select onchange="window.location.href=this.value" class="max-w-full bg-indigo-900/50 text-indigo-50 border border-indigo-500/50 rounded-md px-2.5 py-1 pr-8 outline-none focus:ring-2 focus:ring-indigo-400 text-sm font-medium cursor-pointer appearance-none hover:bg-indigo-800/50 transition-colors" style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e7ff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 0.7rem top 50%; background-size: 0.65rem auto;">
                         @foreach($periods as $p)
                             <option value="{{ route('walas.notes.index', ['period_id' => $p->id]) }}" {{ $period->id == $p->id ? 'selected' : '' }} class="bg-indigo-900 text-white">
                                 Periode: {{ $p->name }}
