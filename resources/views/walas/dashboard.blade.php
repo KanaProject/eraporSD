@@ -9,7 +9,7 @@
                 {{ strtoupper($initials) }}
             </div>
             <div class="flex-1 w-full md:w-auto">
-                <h2 class="text-2xl font-bold mb-2">{{ Auth::user()->name }}</h2>
+                <h2 class="text-lg md:text-2xl font-bold truncate mb-2">{{ Auth::user()->name }}</h2>
                 <div class="flex flex-wrap items-center gap-2 text-sm text-blue-100">
                     <span class="bg-blue-800/50 px-2.5 py-1 rounded-md font-medium border border-blue-600/50">Wali Kelas {{ $myClass->name ?? '-' }}</span>
                     <span class="bg-blue-800/50 px-2.5 py-1 rounded-md font-medium border border-blue-600/50">{{ $students->count() }} Siswa</span>
@@ -37,7 +37,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
             </svg>
         </div>
-        <h2 class="text-2xl font-bold text-slate-800 mb-2">Belum Ada Kelas Perwalian</h2>
+        <h2 class="text-lg md:text-2xl font-bold truncate text-slate-800 mb-2">Belum Ada Kelas Perwalian</h2>
         <p class="text-slate-500 max-w-md text-base leading-relaxed mb-8">
             Saat ini Anda belum ditugaskan sebagai wali kelas pada tahun ajaran aktif. Silakan hubungi tim Kurikulum untuk info pembagian tugas.
         </p>
@@ -53,11 +53,11 @@
 
 
     <!-- Widgets -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
         <!-- Widget 1: L/P -->
-        <div class="bg-gradient-to-br from-emerald-600 to-green-700 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
-            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+        <div class="bg-gradient-to-br from-emerald-600 to-green-700 rounded-xl shadow-md p-3 md:p-4 text-white flex items-center gap-3 md:gap-4 overflow-hidden transition-transform hover:scale-[1.02]">
+            <div class="p-2 md:p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-8 md:h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             </div>
             <div>
                 <div class="text-sm font-bold flex flex-col gap-0.5 mt-1">
@@ -68,35 +68,35 @@
         </div>
 
         <!-- Widget 2: Mapel -->
-        <div class="bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
-            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+        <div class="bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl shadow-md p-3 md:p-4 text-white flex items-center gap-3 md:gap-4 overflow-hidden transition-transform hover:scale-[1.02]">
+            <div class="p-2 md:p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-8 md:h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
             </div>
             <div>
-                <p class="text-sm text-orange-100 font-medium">Mata Pelajaran</p>
-                <h3 class="text-xl font-bold">{{ $subjects->count() }} Mapel</h3>
+                <p class="text-xs md:text-sm text-orange-100 font-medium truncate">Mata Pelajaran</p>
+                <h3 class="text-base md:text-xl font-bold truncate">{{ $subjects->count() }} Mapel</h3>
             </div>
         </div>
 
         <!-- Widget 3: Semester -->
-        <div class="bg-gradient-to-br from-indigo-500 to-purple-700 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
-            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-700 rounded-xl shadow-md p-3 md:p-4 text-white flex items-center gap-3 md:gap-4 overflow-hidden transition-transform hover:scale-[1.02]">
+            <div class="p-2 md:p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-8 md:h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             </div>
             <div>
-                <p class="text-sm text-indigo-100 font-medium">Periode Aktif</p>
+                <p class="text-xs md:text-sm text-indigo-100 font-medium truncate">Periode Aktif</p>
                 <h3 class="text-[17px] font-bold leading-tight" title="{{ $activePeriod ? $activePeriod->name : '-' }}">{{ $activePeriod ? $activePeriod->name : '-' }}</h3>
             </div>
         </div>
 
         <!-- Widget 4: Tahun Ajaran -->
-        <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-md p-4 text-white flex items-center gap-4 transition-transform hover:scale-[1.02]">
-            <div class="p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" /></svg>
+        <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-md p-3 md:p-4 text-white flex items-center gap-3 md:gap-4 overflow-hidden transition-transform hover:scale-[1.02]">
+            <div class="p-2 md:p-3 bg-white/20 rounded-lg shrink-0 border border-white/20">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 md:w-8 md:h-8 drop-shadow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 14l9-5-9-5-9 5 9 5z" /><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" /></svg>
             </div>
             <div>
-                <p class="text-sm text-blue-100 font-medium">Tahun Ajaran</p>
-                <h3 class="text-xl font-bold">{{ $activeYear ? $activeYear->name : '-' }}</h3>
+                <p class="text-xs md:text-sm text-blue-100 font-medium truncate">Tahun Ajaran</p>
+                <h3 class="text-base md:text-xl font-bold truncate">{{ $activeYear ? $activeYear->name : '-' }}</h3>
             </div>
         </div>
     </div>
