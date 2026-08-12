@@ -48,47 +48,69 @@
 
 
     <div class="overflow-y-auto max-h-[60vh] relative">
-        <table class="data-table w-full text-sm">
-            <thead class="sticky top-0 z-10 shadow-sm">
+        <table class="data-table w-full text-sm flex flex-col md:table">
+            <thead class="sticky top-0 z-10 shadow-sm hidden md:table-header-group">
                 <tr class="border-b-2 border-indigo-200 bg-indigo-50">
-                <th class="w-10 text-indigo-900 font-semibold py-3 px-4">No</th>
-                <th class="text-indigo-900 font-semibold py-3 px-4 text-left">Nama Siswa</th>
-                <th class="text-indigo-900 font-semibold py-3 px-4 text-left">NIS/NISN</th>
-                <th class="text-center text-indigo-900 font-semibold py-3 px-4">Status Cetak</th>
-                <th class="text-right text-indigo-900 font-semibold py-3 px-4">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($students as $i => $student)
-            @php $status = $statuses->get($student->id); @endphp
-            <tr class="border-b border-slate-100 hover:bg-indigo-50/40">
-                <td class="text-slate-400 py-3 px-4">{{ $i+1 }}</td>
-                <td class="font-medium text-slate-800 py-3 px-4">{{ $student->name }}</td>
-                <td class="text-slate-500 py-3 px-4">{{ $student->nis ?? '-' }} / {{ $student->nisn ?? '-' }}</td>
-                <td class="text-center py-3 px-4">
-                    @if($status && $status->isGenerated())
-                        <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-md text-xs font-semibold border border-emerald-200">Sudah Dicetak</span>
-                        <div class="text-xs text-slate-400 mt-1">{{ $status->generated_at->format('d/m/Y H:i') }}</div>
-                    @else
-                        <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md text-xs font-semibold border border-indigo-200">Belum Dicetak</span>
-                    @endif
-                </td>
-                <td class="text-right py-3 px-4">
-                    <form method="POST" action="{{ route('walas.report-cards.generate') }}">
-                        @csrf
-                        <input type="hidden" name="student_id" value="{{ $student->id }}">
-                        <input type="hidden" name="period_id" value="{{ $period->id }}">
-                        <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md text-sm font-semibold inline-flex items-center gap-1.5 transition-all shadow-sm hover:shadow hover:-translate-y-0.5">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
-                            {{ $status && $status->isGenerated() ? 'Cetak Ulang' : 'Cetak Rapor' }}
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            @empty
-            <tr><td colspan="5" class="text-center py-10 text-slate-400">Belum ada siswa di kelas ini.</td></tr>
-            @endforelse
-        </tbody>
+                    <th class="w-10 text-indigo-900 font-semibold py-3 px-4">No</th>
+                    <th class="text-indigo-900 font-semibold py-3 px-4 text-left">Nama Siswa</th>
+                    <th class="text-indigo-900 font-semibold py-3 px-4 text-left">NIS/NISN</th>
+                    <th class="text-center text-indigo-900 font-semibold py-3 px-4">Status Cetak</th>
+                    <th class="text-right text-indigo-900 font-semibold py-3 px-4">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="flex flex-col md:table-row-group gap-4 md:gap-0 p-4 md:p-0">
+                @forelse($students as $i => $student)
+                @php $status = $statuses->get($student->id); @endphp
+                <tr class="flex flex-col md:table-row border border-slate-200 md:border-b md:border-x-0 md:border-t-0 md:border-slate-100 rounded-xl md:rounded-none bg-white overflow-hidden shadow-sm md:shadow-none hover:bg-indigo-50/40">
+                    <td class="hidden md:table-cell text-slate-400 py-3 px-4">{{ $i+1 }}</td>
+                    
+                    <td class="font-semibold md:font-medium text-slate-800 py-3 px-4 border-b border-slate-100 md:border-none flex justify-between items-center bg-slate-50/50 md:bg-transparent">
+                        <div class="flex items-center gap-3">
+                            <span class="md:hidden bg-indigo-100 text-indigo-700 w-6 h-6 flex items-center justify-center rounded-full text-xs">{{ $i+1 }}</span>
+                            {{ $student->name }}
+                        </div>
+                        <div class="md:hidden">
+                            @if($status && $status->isGenerated())
+                                <span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[10px] font-bold uppercase">Sudah</span>
+                            @else
+                                <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded text-[10px] font-bold uppercase">Belum</span>
+                            @endif
+                        </div>
+                    </td>
+                    
+                    <td class="text-slate-500 py-2 px-4 md:py-3 border-b border-slate-50 md:border-none flex md:table-cell justify-between items-center text-xs md:text-sm">
+                        <span class="md:hidden font-medium text-slate-400 uppercase">NIS/NISN</span>
+                        {{ $student->nis ?? '-' }} / {{ $student->nisn ?? '-' }}
+                    </td>
+                    
+                    <td class="hidden md:table-cell text-center py-3 px-4">
+                        @if($status && $status->isGenerated())
+                            <span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-md text-xs font-semibold border border-emerald-200">Sudah Dicetak</span>
+                            <div class="text-xs text-slate-400 mt-1">{{ $status->generated_at->format('d/m/Y H:i') }}</div>
+                        @else
+                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md text-xs font-semibold border border-indigo-200">Belum Dicetak</span>
+                        @endif
+                    </td>
+                    
+                    <td class="py-3 px-4 md:text-right">
+                        <form method="POST" action="{{ route('walas.report-cards.generate') }}" class="w-full md:w-auto">
+                            @csrf
+                            <input type="hidden" name="student_id" value="{{ $student->id }}">
+                            <input type="hidden" name="period_id" value="{{ $period->id }}">
+                            <button type="submit" class="w-full md:w-auto justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 md:py-1.5 rounded-md text-sm font-semibold inline-flex items-center gap-1.5 transition-all shadow-sm hover:shadow hover:-translate-y-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                                {{ $status && $status->isGenerated() ? 'Cetak Ulang' : 'Cetak Rapor' }}
+                            </button>
+                        </form>
+                        @if($status && $status->isGenerated())
+                            <div class="md:hidden text-center text-[10px] text-slate-400 mt-2">Dicetak pada: {{ $status->generated_at->format('d/m/Y H:i') }}</div>
+                        @endif
+                    </td>
+                </tr>
+                @empty
+                <tr class="flex md:table-row"><td colspan="5" class="text-center py-10 text-slate-400 w-full">Belum ada siswa di kelas ini.</td></tr>
+                @endforelse
+            </tbody>
         </table>
     </div>
 </div>
