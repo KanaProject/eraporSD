@@ -25,9 +25,8 @@
 
 <div class="card p-0 overflow-hidden">
     <div class="p-4 border-b border-slate-100 flex items-center justify-between bg-white">
-        <div class="flex flex-wrap gap-2">
-            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-md text-xs font-semibold border border-indigo-200">Periode: {{ $period->name }}</span>
-            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-md text-xs font-semibold border border-blue-200">Total Siswa: {{ $students->count() }}</span>
+        <div class="text-sm text-slate-500">
+            Total Siswa: <span class="font-semibold text-slate-700">{{ $students->count() }}</span>
         </div>
         @if($students->isNotEmpty())
         <form method="POST" action="{{ route('walas.report-cards.generate-all') }}"
