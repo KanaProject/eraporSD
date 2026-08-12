@@ -5,7 +5,7 @@
 </div>
 
 <!-- Grade Level Filter -->
-<div class="flex gap-2 mb-6">
+<div class="flex flex-wrap gap-2 mb-6">
     @for($g=1;$g<=6;$g++)
     <a href="{{ route('kurikulum.configs.index', ['grade' => $g]) }}"
         class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ $gradeLevel == $g ? 'bg-primary-600 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50' }}">
@@ -21,22 +21,22 @@
     @csrf
     <input type="hidden" name="grade_level" value="{{ $gradeLevel }}">
     <div class="card overflow-x-auto">
-        <table class="w-full text-sm">
-            <thead>
+        <table class="w-full text-sm flex flex-col lg:table">
+            <thead class="hidden lg:table-header-group">
                 <tr class="border-b border-slate-200">
                     <th class="text-left py-3 px-4 font-semibold text-slate-600">Mata Pelajaran</th>
                     <th class="text-center py-3 px-2 font-semibold text-slate-600">Pengaturan KKM & Bobot (Berlaku untuk seluruh Kelas {{ $gradeLevel }})</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="flex flex-col lg:table-row-group">
                 @php $currentGroup = ''; @endphp
                 @foreach($subjects as $subject)
                 @if($currentGroup != $subject->group)
-                    <tr class="bg-slate-50"><td colspan="2" class="font-semibold text-slate-700 py-2 px-4">{{ $subject->group }}</td></tr>
+                    <tr class="bg-slate-50 flex flex-col lg:table-row"><td colspan="2" class="font-semibold text-slate-700 py-2 px-4">{{ $subject->group }}</td></tr>
                     @php $currentGroup = $subject->group; @endphp
                 @endif
-                <tr class="border-b border-slate-100">
-                    <td class="py-3 px-4 font-medium text-slate-800">
+                <tr class="border-b border-slate-100 flex flex-col lg:table-row">
+                    <td class="py-3 px-4 font-medium text-slate-800 border-b border-slate-50 lg:border-none">
                         <label class="flex items-center gap-3 cursor-pointer">
                             @php $config = $configs[$subject->id] ?? null; @endphp
                             <input type="checkbox" name="subject_ids[]" value="{{ $subject->id }}" class="form-checkbox text-primary-600 rounded toggle-subject" {{ $config ? 'checked' : '' }} data-target="config-row-{{ $subject->id }}">
@@ -49,24 +49,28 @@
                             </span>
                         </label>
                     </td>
-                    <td class="py-3 px-2">
-                        <div id="config-row-{{ $subject->id }}" class="flex items-center justify-center gap-8 py-2 transition-opacity {{ $config ? '' : 'opacity-30 pointer-events-none' }}">
-                            <div class="flex items-center gap-2">
+                    <td class="py-3 px-4 lg:px-2 bg-slate-50/50 lg:bg-transparent">
+                        <div id="config-row-{{ $subject->id }}" class="flex flex-col sm:flex-row items-start sm:items-center justify-start lg:justify-center gap-4 lg:gap-8 py-2 lg:py-1 transition-opacity {{ $config ? '' : 'opacity-30 pointer-events-none' }}">
+                            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
                                 <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">KKM</span>
                                 <input type="number" name="configs[{{ $subject->id }}][kkm]" value="{{ $config->kkm ?? 70 }}"
                                     class="form-input text-sm font-medium py-1.5 px-3 w-24 text-center config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
                                 <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Bobot UH</span>
-                                <input type="number" name="configs[{{ $subject->id }}][bobot_uh]" value="{{ $config->bobot_uh ?? 50 }}"
-                                    class="form-input text-sm font-medium py-1.5 px-3 w-20 text-center input-bobot-uh config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
-                                <span class="text-xs text-slate-400 font-medium">%</span>
+                                <div class="flex items-center gap-2">
+                                    <input type="number" name="configs[{{ $subject->id }}][bobot_uh]" value="{{ $config->bobot_uh ?? 50 }}"
+                                        class="form-input text-sm font-medium py-1.5 px-3 w-20 text-center input-bobot-uh config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
+                                    <span class="text-xs text-slate-400 font-medium w-4">%</span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-start">
                                 <span class="text-xs font-semibold text-slate-500 uppercase tracking-wide">Bobot Teori</span>
-                                <input type="number" name="configs[{{ $subject->id }}][bobot_teori]" value="{{ $config->bobot_teori ?? 50 }}"
-                                    class="form-input text-sm font-medium py-1.5 px-3 w-20 text-center input-bobot-teori config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
-                                <span class="text-xs text-slate-400 font-medium">%</span>
+                                <div class="flex items-center gap-2">
+                                    <input type="number" name="configs[{{ $subject->id }}][bobot_teori]" value="{{ $config->bobot_teori ?? 50 }}"
+                                        class="form-input text-sm font-medium py-1.5 px-3 w-20 text-center input-bobot-teori config-input" min="0" max="100" step="1" {{ $config ? '' : 'disabled' }}>
+                                    <span class="text-xs text-slate-400 font-medium w-4">%</span>
+                                </div>
                             </div>
                         </div>
                     </td>
