@@ -48,30 +48,33 @@
         @endif
 
         <div class="overflow-y-auto max-h-[60vh] relative">
-            <table class="w-full text-sm">
-                <thead class="sticky top-0 z-10 shadow-sm">
+            <table class="w-full text-sm flex flex-col md:table">
+                <thead class="sticky top-0 z-10 shadow-sm hidden md:table-header-group">
                 <tr class="border-b-2 border-indigo-200 bg-indigo-50">
                     <th class="text-left py-3 px-3 font-semibold text-indigo-900 w-8">#</th>
                     <th class="text-left py-3 px-3 font-semibold text-indigo-900 min-w-[200px]">Nama Siswa</th>
                     <th class="text-left py-3 px-3 font-semibold text-indigo-900 min-w-[300px]">Catatan Wali Kelas</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="flex flex-col md:table-row-group gap-4 md:gap-0 p-4 md:p-0">
                 @forelse($students as $i => $student)
                 @php $note = $notes->get($student->id); @endphp
-                <tr class="border-b border-slate-100 hover:bg-indigo-50/50">
-                    <td class="py-3 px-3 text-slate-400 text-xs align-top">{{ $i+1 }}</td>
-                    <td class="py-3 px-3 align-top">
-                        <div class="font-medium text-slate-800">{{ $student->name }}</div>
-                        <div class="text-xs text-slate-400">{{ $student->nis ?? '-' }}</div>
+                <tr class="flex flex-col md:table-row border border-slate-200 md:border-b md:border-x-0 md:border-t-0 md:border-slate-100 rounded-xl md:rounded-none bg-white overflow-hidden shadow-sm md:shadow-none hover:bg-indigo-50/50">
+                    <td class="hidden md:table-cell py-3 px-3 text-slate-400 text-xs align-top">{{ $i+1 }}</td>
+                    <td class="py-3 px-4 md:px-3 align-top border-b border-slate-100 md:border-none flex items-center gap-3 bg-slate-50/50 md:bg-transparent">
+                        <span class="md:hidden bg-indigo-100 text-indigo-700 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold shrink-0">{{ $i+1 }}</span>
+                        <div>
+                            <div class="font-semibold md:font-medium text-slate-800">{{ $student->name }}</div>
+                            <div class="text-xs text-slate-400">{{ $student->nis ?? '-' }}</div>
+                        </div>
                     </td>
-                    <td class="py-3 px-3">
+                    <td class="py-3 px-4 md:px-3">
                         <textarea name="notes[{{ $student->id }}][note]" rows="3" 
                             class="form-input text-sm w-full border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 disabled:bg-slate-100 disabled:text-slate-400 transition-shadow" placeholder="Cth: Pertahankan prestasimu dan tingkatkan kedisiplinan..." {{ !$period->is_active ? 'disabled' : '' }}>{{ $note->note ?? '' }}</textarea>
                     </td>
                 </tr>
                 @empty
-                <tr><td colspan="3" class="text-center py-10 text-slate-400">Belum ada siswa di kelas ini.</td></tr>
+                <tr class="flex md:table-row"><td colspan="3" class="text-center py-10 text-slate-400 w-full">Belum ada siswa di kelas ini.</td></tr>
                 @endforelse
             </tbody>
         </table>
