@@ -12,8 +12,11 @@
 </head>
 <body class="bg-slate-50">
 
+<!-- Mobile Sidebar Backdrop -->
+<div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 hidden md:hidden transition-opacity duration-300 opacity-0 cursor-pointer"></div>
+
 <!-- Sidebar -->
-<aside class="sidebar scrollbar-thin">
+<aside id="mainSidebar" class="sidebar scrollbar-thin">
     @php $school = \App\Models\School::getInstance(); @endphp
     <div class="sidebar-brand">
         @if($school->logo_path)
@@ -37,7 +40,14 @@
 <div class="main-content">
     <!-- Topbar -->
     <header class="topbar">
-        <div id="topbar-left" class="flex-1 mr-4 min-w-0"></div>
+        <div id="topbar-left" class="flex-1 mr-4 min-w-0 flex items-center gap-3">
+            <!-- Mobile Menu Toggle -->
+            <button type="button" id="sidebarToggle" class="md:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
         <div class="flex items-center gap-4 shrink-0">
 
             @php
@@ -556,6 +566,35 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+
+    // --- Mobile Sidebar Toggle Logic ---
+    const sidebar = document.getElementById('mainSidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+    function openSidebar() {
+        if (sidebar && sidebarBackdrop) {
+            sidebar.classList.add('sidebar-open');
+            sidebarBackdrop.classList.remove('hidden');
+            setTimeout(() => sidebarBackdrop.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeSidebar() {
+        if (sidebar && sidebarBackdrop) {
+            sidebar.classList.remove('sidebar-open');
+            sidebarBackdrop.classList.add('opacity-0');
+            setTimeout(() => sidebarBackdrop.classList.add('hidden'), 300);
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (sidebarToggle && sidebarBackdrop) {
+        sidebarToggle.addEventListener('click', openSidebar);
+        sidebarBackdrop.addEventListener('click', closeSidebar);
+    }
+
     // Move title and subtitle to topbar, but leave buttons in the view content
     const pageHeader = document.querySelector('.page-header');
     const topbarLeft = document.getElementById('topbar-left');
