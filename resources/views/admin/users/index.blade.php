@@ -147,6 +147,31 @@
                 <div class="text-white/50 text-xs mb-1 uppercase tracking-wider">Role saat ini</div>
                 <div id="euRoles" class="flex flex-wrap gap-1 mt-1"></div>
             </div>
+            
+            {{-- Quick Actions --}}
+            <div id="euQuickActions" class="mt-6 pt-5 border-t border-white/20 w-full text-left hidden">
+                <div class="text-white/50 text-xs mb-2 uppercase tracking-wider">Aksi Cepat</div>
+                <div class="flex flex-col gap-2">
+                    <form id="euResetForm" method="POST" class="w-full"
+                        data-confirm="Reset password pengguna ini ke 12345678?"
+                        data-confirm-title="Reset Password"
+                        data-confirm-type="warning"
+                        data-confirm-ok="Ya, Reset">
+                        @csrf
+                        <button type="submit" class="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-xs text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg>
+                            Reset Password
+                        </button>
+                    </form>
+                    <form id="euToggleForm" method="POST" class="w-full">
+                        @csrf
+                        <button type="submit" id="euToggleBtn" class="w-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 transition-colors text-xs">
+                            <svg id="euToggleIcon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"></svg>
+                            <span id="euToggleText">Nonaktifkan</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
 
         {{-- Right panel --}}
@@ -337,6 +362,30 @@ function openEditModal(btn) {
     document.querySelectorAll('.eu-role-check').forEach(function(cb) {
         cb.checked = userRoles.includes(cb.value);
     });
+
+    // Quick Actions
+    const quickActions = document.getElementById('euQuickActions');
+    if (d.isAdmin === '1') {
+        quickActions.classList.add('hidden');
+    } else {
+        quickActions.classList.remove('hidden');
+        document.getElementById('euResetForm').action = d.resetUrl;
+        document.getElementById('euToggleForm').action = d.toggleUrl;
+        
+        const toggleBtn = document.getElementById('euToggleBtn');
+        const toggleText = document.getElementById('euToggleText');
+        const toggleIcon = document.getElementById('euToggleIcon');
+        
+        if (d.isActive === '1') {
+            toggleBtn.className = 'w-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors text-xs text-white';
+            toggleText.textContent = 'Nonaktifkan';
+            toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>';
+        } else {
+            toggleBtn.className = 'w-full flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/20 hover:bg-green-500/30 transition-colors text-xs text-green-300';
+            toggleText.textContent = 'Aktifkan';
+            toggleIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>';
+        }
+    }
 
     // Show modal
     const backdrop = document.getElementById('editUserBackdrop');
