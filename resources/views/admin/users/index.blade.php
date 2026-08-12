@@ -19,21 +19,25 @@
 
 <div class="card">
     <!-- Filters -->
-    <form method="GET" class="flex gap-3 mb-4 flex-wrap">
-        <input type="text" name="search" value="{{ request('search') }}" class="form-input max-w-xs" placeholder="Cari nama / username...">
-        <select name="status" class="form-select w-32">
-            <option value="aktif"   {{ request('status', 'aktif') == 'aktif'    ? 'selected' : '' }}>Aktif</option>
-            <option value="nonaktif" {{ request('status') == 'nonaktif'         ? 'selected' : '' }}>Non-Aktif</option>
-            <option value="semua"   {{ request('status') == 'semua'             ? 'selected' : '' }}>Semua</option>
-        </select>
-        <select name="role" class="form-select w-40">
-            <option value="">Semua Peran</option>
-            @foreach($roles as $role)
-            <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>{{ ucfirst($role->name) }}</option>
-            @endforeach
-        </select>
-        <button type="submit" class="btn-primary">Filter</button>
-        <a href="{{ route('admin.users.index') }}" class="btn-secondary">Reset</a>
+    <form method="GET" class="flex flex-col md:flex-row gap-3 mb-4">
+        <input type="text" name="search" value="{{ request('search') }}" class="form-input w-full md:max-w-xs" placeholder="Cari nama / username...">
+        <div class="flex flex-wrap sm:flex-nowrap gap-3 w-full md:w-auto">
+            <select name="status" class="form-select w-full sm:w-32">
+                <option value="aktif"   {{ request('status', 'aktif') == 'aktif'    ? 'selected' : '' }}>Aktif</option>
+                <option value="nonaktif" {{ request('status') == 'nonaktif'         ? 'selected' : '' }}>Non-Aktif</option>
+                <option value="semua"   {{ request('status') == 'semua'             ? 'selected' : '' }}>Semua</option>
+            </select>
+            <select name="role" class="form-select w-full sm:w-40">
+                <option value="">Semua Peran</option>
+                @foreach($roles as $role)
+                <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>{{ ucfirst($role->name) }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="flex gap-2 w-full md:w-auto">
+            <button type="submit" class="btn-primary flex-1 md:flex-none justify-center">Filter</button>
+            <a href="{{ route('admin.users.index') }}" class="btn-secondary flex-1 md:flex-none justify-center">Reset</a>
+        </div>
     </form>
 
     <div class="overflow-x-auto">
@@ -41,70 +45,80 @@
             <thead>
                 <tr>
                     <th>Nama</th>
-                    <th>Username</th>
-                    <th>NIP</th>
-                    <th>Peran</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-right">Aksi</th>
+                    <th class="hidden md:table-cell">Username</th>
+                    <th class="hidden md:table-cell">NIP</th>
+                    <th class="hidden md:table-cell">Peran</th>
+                    <th class="hidden md:table-cell text-center">Status</th>
+                    <th class="hidden md:table-cell text-right">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($users as $user)
                 <tr>
-                    <td class="font-medium">{{ $user->name }}</td>
-                    <td class="text-slate-500">{{ $user->username }}</td>
-                    <td class="text-slate-500 text-xs">{{ $user->nip ?? '-' }}</td>
-                    <td>
+                    <td class="font-medium">
+                        <div class="flex items-center gap-2">
+                            <button type="button" class="md:hidden w-6 h-6 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center shrink-0 transition-colors" onclick="toggleRow('row-{{ $user->id }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" id="icon-{{ $user->id }}"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                            </button>
+                            <span>{{ $user->name }}</span>
+                        </div>
+                    </td>
+                    <td class="hidden md:table-cell text-slate-500">{{ $user->username }}</td>
+                    <td class="hidden md:table-cell text-slate-500 text-xs">{{ $user->nip ?? '-' }}</td>
+                    <td class="hidden md:table-cell">
                         <div class="flex flex-wrap gap-1">
                         @foreach($user->roles as $role)
                             <span class="badge {{ $role->name === 'admin' ? 'badge-danger' : ($role->name === 'kurikulum' ? 'badge-info' : 'badge-success') }}">{{ ucfirst($role->name) }}</span>
                         @endforeach
                         </div>
                     </td>
-                    <td class="text-center">
+                    <td class="hidden md:table-cell text-center">
                         @if($user->is_active)
                             <span class="badge-success">Aktif</span>
                         @else
                             <span class="badge-danger">Nonaktif</span>
                         @endif
                     </td>
-                    <td class="text-right">
-                        <div class="flex justify-end gap-1">
-                            {{-- Edit: open modal --}}
-                            <button type="button" class="btn-icon" title="Edit Pengguna"
-                                onclick="openEditModal(this)"
-                                data-id="{{ $user->id }}"
-                                data-name="{{ $user->name }}"
-                                data-username="{{ $user->username }}"
-                                data-nip="{{ $user->nip }}"
-                                data-phone="{{ $user->phone }}"
-                                data-roles="{{ $user->getRoleNames()->implode(',') }}"
-                                data-action="{{ route('admin.users.update', $user) }}">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487z"/></svg>
-                            </button>
-
-                            @if(!$user->hasRole('admin'))
-                            <form method="POST" action="{{ route('admin.users.reset-password', $user) }}" class="inline"
-                                data-confirm="Reset password {{ $user->name }} ke 12345678?"
-                                data-confirm-title="Reset Password"
-                                data-confirm-type="warning"
-                                data-confirm-ok="Ya, Reset">
-                                @csrf
-                                <button type="submit" class="btn-icon" title="Reset Password">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg>
-                                </button>
-                            </form>
-                            <form method="POST" action="{{ route('admin.users.toggle', $user) }}" class="inline">
-                                @csrf
-                                <button type="submit" class="btn-icon {{ $user->is_active ? 'text-amber-500 hover:text-amber-700' : 'text-green-500 hover:text-green-700' }}" title="{{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}">
+                    <td class="hidden md:table-cell text-right">
+                        @include('admin.users.partials.actions', ['user' => $user])
+                    </td>
+                </tr>
+                {{-- Hidden Row for Mobile --}}
+                <tr id="row-{{ $user->id }}" class="hidden md:hidden bg-slate-50 border-b border-slate-100">
+                    <td colspan="1" class="px-4 py-3">
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-slate-200 pb-2">
+                                <span class="text-slate-500">Username</span>
+                                <span class="font-medium text-slate-700">{{ $user->username }}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 pb-2">
+                                <span class="text-slate-500">NIP</span>
+                                <span class="text-slate-700">{{ $user->nip ?? '-' }}</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 pb-2">
+                                <span class="text-slate-500">Peran</span>
+                                <div class="flex flex-wrap gap-1 justify-end">
+                                    @foreach($user->roles as $role)
+                                        <span class="badge {{ $role->name === 'admin' ? 'badge-danger' : ($role->name === 'kurikulum' ? 'badge-info' : 'badge-success') }}">{{ ucfirst($role->name) }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 pb-2">
+                                <span class="text-slate-500">Status</span>
+                                <div>
                                     @if($user->is_active)
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                                        <span class="badge-success">Aktif</span>
                                     @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        <span class="badge-danger">Nonaktif</span>
                                     @endif
-                                </button>
-                            </form>
-                            @endif
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center pt-1">
+                                <span class="text-slate-500">Aksi</span>
+                                <div>
+                                    @include('admin.users.partials.actions', ['user' => $user])
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -375,6 +389,20 @@ document.addEventListener('click', function(e) {
         e.target.classList.add('hidden');
     }
 });
+
+function toggleRow(id) {
+    const row = document.getElementById(id);
+    const icon = document.getElementById(id.replace('row-', 'icon-'));
+    if (row.classList.contains('hidden')) {
+        row.classList.remove('hidden');
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />';
+        icon.classList.add('text-red-500');
+    } else {
+        row.classList.add('hidden');
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />';
+        icon.classList.remove('text-red-500');
+    }
+}
 </script>
 
 {{-- ─── Modal Import Excel ─── --}}
