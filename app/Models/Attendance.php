@@ -12,7 +12,12 @@ class Attendance extends Model
         'month',
         'sakit',
         'izin',
-        'alpa'
+        'alpa',
+        'daily_data'
+    ];
+
+    protected $casts = [
+        'daily_data' => 'array'
     ];
 
     public function student()

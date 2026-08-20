@@ -49,6 +49,13 @@ class AttendanceController extends Controller
         // Default to July (7) if no month is selected
         $selectedMonth = $request->get('month', 7);
 
+        // Determine year and days in month
+        $parts = explode('/', $academicYear->name);
+        $startYear = (int) $parts[0];
+        $endYear = count($parts) > 1 ? (int) $parts[1] : $startYear + 1;
+        $currentYear = ($selectedMonth >= 7 && $selectedMonth <= 12) ? $startYear : $endYear;
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, $currentYear);
+
         // Fetch students in this class
         $students = Student::where('school_class_id', $classId)
             ->orderBy('name')
@@ -67,7 +74,9 @@ class AttendanceController extends Controller
             'students',
             'months',
             'selectedMonth',
-            'attendances'
+            'attendances',
+            'daysInMonth',
+            'currentYear'
         ));
     }
 
@@ -79,14 +88,22 @@ class AttendanceController extends Controller
         $request->validate([
             'month' => 'required|integer|min:1|max:12',
             'attendances' => 'required|array',
-            'attendances.*.sakit' => 'required|integer|min:0',
-            'attendances.*.izin' => 'required|integer|min:0',
-            'attendances.*.alpa' => 'required|integer|min:0',
+            'attendances.*' => 'array',
         ]);
 
         $month = $request->month;
 
-        foreach ($request->attendances as $studentId => $data) {
+        foreach ($request->attendances as $studentId => $dailyData) {
+            $sakit = 0;
+            $izin = 0;
+            $alpa = 0;
+
+            foreach ($dailyData as $day => $status) {
+                if ($status === 'S') $sakit++;
+                if ($status === 'I') $izin++;
+                if ($status === 'A') $alpa++;
+            }
+
             Attendance::updateOrCreate(
                 [
                     'student_id' => $studentId,
@@ -94,9 +111,10 @@ class AttendanceController extends Controller
                     'month' => $month
                 ],
                 [
-                    'sakit' => $data['sakit'] ?? 0,
-                    'izin' => $data['izin'] ?? 0,
-                    'alpa' => $data['alpa'] ?? 0,
+                    'sakit' => $sakit,
+                    'izin' => $izin,
+                    'alpa' => $alpa,
+                    'daily_data' => $dailyData,
                 ]
             );
         }
