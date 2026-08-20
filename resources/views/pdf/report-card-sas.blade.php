@@ -163,7 +163,23 @@
     </tbody>
 </table>
 
-<div class="font-bold mb-2 mt-4">B. CATATAN WALI KELAS</div>
+<div class="font-bold mb-2 mt-4">B. KETIDAKHADIRAN</div>
+<table class="data" style="width: 50%;">
+    <tr>
+        <td style="padding: 5px 15px; width: 60%;">Sakit</td>
+        <td style="padding: 5px 15px; width: 40%; text-align: center;">{{ $attendance->sakit ?? 0 }} hari</td>
+    </tr>
+    <tr>
+        <td style="padding: 5px 15px;">Izin</td>
+        <td style="padding: 5px 15px; text-align: center;">{{ $attendance->izin ?? 0 }} hari</td>
+    </tr>
+    <tr>
+        <td style="padding: 5px 15px;">Tanpa Keterangan</td>
+        <td style="padding: 5px 15px; text-align: center;">{{ $attendance->alpa ?? 0 }} hari</td>
+    </tr>
+</table>
+
+<div class="font-bold mb-2 mt-4">C. CATATAN WALI KELAS</div>
 <table class="data">
     <tr>
         <td style="padding: 15px;">
@@ -173,7 +189,7 @@
 </table>
 
 @if($period->code == 'SAT')
-<div class="font-bold mb-2 mt-4">C. KEPUTUSAN KELAS</div>
+<div class="font-bold mb-2 mt-4">D. KEPUTUSAN KELAS</div>
 <table class="data">
     <tr>
         <td style="padding: 15px;">

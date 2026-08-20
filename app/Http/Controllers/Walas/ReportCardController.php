@@ -88,13 +88,20 @@ class ReportCardController extends Controller
         $semester   = $period->semester;
         $note       = HomeroomNote::where('student_id', $student->id)->where('assessment_period_id', $period->id)->first();
 
+        $months = $semester->type === 'ganjil' ? [7, 8, 9, 10, 11, 12] : [1, 2, 3, 4, 5, 6];
+        $attendance = \App\Models\Attendance::where('student_id', $student->id)
+            ->where('academic_year_id', $semester->academic_year_id)
+            ->whereIn('month', $months)
+            ->selectRaw('SUM(sakit) as sakit, SUM(izin) as izin, SUM(alpa) as alpa')
+            ->first();
+
         $walas = Auth::user();
 
         $template = $period->isAstsType() ? 'pdf.report-card-asts' : 'pdf.report-card-sas';
 
         $pdf = Pdf::loadView($template, compact(
             'student', 'period', 'semester', 'school', 'mainSubjects',
-            'grades', 'configs', 'note', 'walas'
+            'grades', 'configs', 'note', 'walas', 'attendance'
         ))->setPaper('a4', 'portrait');
 
         // Store PDF

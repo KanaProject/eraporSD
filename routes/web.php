@@ -114,6 +114,10 @@ Route::prefix('walas')->name('walas.')->middleware(['auth', 'role:walas'])->grou
 
 
 
+    // Attendance
+    Route::get('/attendances', [Walas\AttendanceController::class, 'index'])->name('attendances.index');
+    Route::post('/attendances', [Walas\AttendanceController::class, 'store'])->name('attendances.store');
+
     // Homeroom Notes
     Route::get('/notes',  [Walas\HomeroomNoteController::class, 'index'])->name('notes.index');
     Route::post('/notes', [Walas\HomeroomNoteController::class, 'save'])->name('notes.save');
