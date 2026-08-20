@@ -127,6 +127,7 @@ Route::prefix('walas')->name('walas.')->middleware(['auth', 'role:walas'])->grou
 
     // Report Cards
     Route::get('/report-cards',          [Walas\ReportCardController::class, 'index'])->name('report-cards.index');
+    Route::get('/report-cards/{student_id}/{period_id}/preview', [Walas\ReportCardController::class, 'preview'])->name('report-cards.preview');
     Route::post('/report-cards/generate', [Walas\ReportCardController::class, 'generate'])->name('report-cards.generate');
     Route::post('/report-cards/generate-all', [Walas\ReportCardController::class, 'generateAll'])->name('report-cards.generate-all');
 });

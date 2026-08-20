@@ -53,8 +53,37 @@ class ReportCardController extends Controller
             'period_id'  => 'required|exists:assessment_periods,id',
         ]);
 
-        $student = Student::with('schoolClass')->findOrFail($request->student_id);
-        $period  = AssessmentPeriod::with('semester.academicYear')->findOrFail($request->period_id);
+        $data = $this->getPdfData($request->student_id, $request->period_id);
+        $student = $data['student'];
+        $period = $data['period'];
+        $template = $data['template'];
+
+        $pdf = Pdf::loadView($template, $data)->setPaper('a4', 'portrait');
+
+        // Store PDF
+        $path = "rapor/{$student->id}_{$period->code}.pdf";
+        Storage::disk('public')->put($path, $pdf->output());
+
+        ReportCardStatus::updateOrCreate(
+            ['student_id' => $student->id, 'assessment_period_id' => $period->id],
+            ['generated_at' => now(), 'generated_by' => Auth::id(), 'pdf_path' => $path]
+        );
+
+        return $pdf->download("Rapor_{$student->name}_{$period->name}.pdf");
+    }
+
+    public function preview($student_id, $period_id)
+    {
+        $data = $this->getPdfData($student_id, $period_id);
+        $pdf = Pdf::loadView($data['template'], $data)->setPaper('a4', 'portrait');
+        
+        return $pdf->stream("Preview_{$data['student']->name}.pdf");
+    }
+
+    private function getPdfData($student_id, $period_id)
+    {
+        $student = Student::with('schoolClass')->findOrFail($student_id);
+        $period  = AssessmentPeriod::with('semester.academicYear')->findOrFail($period_id);
         $school  = School::getInstance();
 
         $gradeLevel = $student->schoolClass->grade_level;
@@ -96,24 +125,9 @@ class ReportCardController extends Controller
             ->first();
 
         $walas = Auth::user();
-
         $template = $period->isAstsType() ? 'pdf.report-card-asts' : 'pdf.report-card-sas';
 
-        $pdf = Pdf::loadView($template, compact(
-            'student', 'period', 'semester', 'school', 'mainSubjects',
-            'grades', 'configs', 'note', 'walas', 'attendance'
-        ))->setPaper('a4', 'portrait');
-
-        // Store PDF
-        $path = "rapor/{$student->id}_{$period->code}.pdf";
-        Storage::disk('public')->put($path, $pdf->output());
-
-        ReportCardStatus::updateOrCreate(
-            ['student_id' => $student->id, 'assessment_period_id' => $period->id],
-            ['generated_at' => now(), 'generated_by' => Auth::id(), 'pdf_path' => $path]
-        );
-
-        return $pdf->download("Rapor_{$student->name}_{$period->name}.pdf");
+        return compact('student', 'period', 'semester', 'school', 'mainSubjects', 'grades', 'configs', 'note', 'walas', 'attendance', 'template');
     }
 
     public function generateAll(Request $request)
