@@ -48,20 +48,20 @@
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left">
-                        <thead class="text-xs text-gray-600 uppercase bg-gray-50 border-b border-gray-100">
+                        <thead class="text-xs text-white uppercase bg-indigo-700 border-b border-indigo-800">
                             <!-- Row 1: Group headers -->
-                            <tr class="border-b border-gray-200">
-                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-12 text-center sticky left-0 bg-gray-50 z-10 border-r border-gray-100">No</th>
-                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold min-w-[200px] sticky left-[48px] bg-gray-50 z-10 border-r border-gray-200 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">Nama Siswa</th>
-                                <th colspan="{{ $daysInMonth }}" scope="col" class="px-2 py-2 font-bold text-center bg-indigo-50 text-indigo-700 border-l border-gray-200 tracking-widest">Tanggal</th>
-                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-16 text-center border-l border-gray-200 bg-yellow-50/50">S</th>
-                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-16 text-center bg-blue-50/50">I</th>
-                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-16 text-center bg-red-50/50">A</th>
+                            <tr class="border-b border-indigo-600">
+                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-12 text-center sticky left-0 bg-indigo-700 z-10 border-r border-indigo-600">No</th>
+                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold min-w-[200px] sticky left-[48px] bg-indigo-700 z-10 border-r border-indigo-500 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.3)]">Nama Siswa</th>
+                                <th colspan="{{ $daysInMonth }}" scope="col" class="px-2 py-2 font-bold text-center bg-indigo-600 border-l border-indigo-500 tracking-widest">Tanggal</th>
+                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-16 text-center border-l border-indigo-500 bg-yellow-600">S</th>
+                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-16 text-center bg-blue-600">I</th>
+                                <th rowspan="2" scope="col" class="px-4 py-3 font-semibold w-16 text-center bg-red-600">A</th>
                             </tr>
                             <!-- Row 2: Date numbers -->
                             <tr>
                                 @for($d = 1; $d <= $daysInMonth; $d++)
-                                    <th scope="col" class="px-2 py-2 font-semibold w-10 text-center border-l border-gray-100">{{ $d }}</th>
+                                    <th scope="col" class="px-2 py-2 font-semibold w-10 text-center border-l border-indigo-600">{{ $d }}</th>
                                 @endfor
                             </tr>
                         </thead>
