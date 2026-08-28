@@ -168,7 +168,7 @@
     <tr>
         <td style="padding: 5px 15px; width: 45%;">Sakit</td>
         <td style="padding: 5px 15px; width: 25%; text-align: center;">{{ $attendance->sakit ?? 0 }} hari</td>
-        <td rowspan="3" style="padding: 10px 15px; width: 30%; text-align: center; font-weight: 600; border-left: 1px solid #e5e7eb; vertical-align: middle; color: #1e3a8a;">
+        <td rowspan="3" style="padding: 10px 15px; width: 30%; text-align: center; font-weight: 600; vertical-align: middle; color: #1e3a8a;">
             Persentase<br>Kehadiran:<br>
             <span style="font-size: 14px;">{{ $attendanceStats['attendancePercentage'] }}%</span>
         </td>
