@@ -164,10 +164,14 @@
 </table>
 
 <div class="font-bold mb-2 mt-4">B. KETIDAKHADIRAN</div>
-<table class="data" style="width: 50%;">
+<table class="data" style="width: 60%;">
     <tr>
-        <td style="padding: 5px 15px; width: 60%;">Sakit</td>
-        <td style="padding: 5px 15px; width: 40%; text-align: center;">{{ $attendance->sakit ?? 0 }} hari</td>
+        <td style="padding: 5px 15px; width: 45%;">Sakit</td>
+        <td style="padding: 5px 15px; width: 25%; text-align: center;">{{ $attendance->sakit ?? 0 }} hari</td>
+        <td rowspan="3" style="padding: 10px 15px; width: 30%; text-align: center; font-weight: 600; border-left: 1px solid #e5e7eb; vertical-align: middle; color: #1e3a8a;">
+            Persentase<br>Kehadiran:<br>
+            <span style="font-size: 14px;">{{ $attendanceStats['attendancePercentage'] }}%</span>
+        </td>
     </tr>
     <tr>
         <td style="padding: 5px 15px;">Izin</td>
@@ -176,13 +180,6 @@
     <tr>
         <td style="padding: 5px 15px;">Tanpa Keterangan</td>
         <td style="padding: 5px 15px; text-align: center;">{{ $attendance->alpa ?? 0 }} hari</td>
-    </tr>
-    <tr style="background-color: #f0f4ff; border-top: 1px solid #c7d2fe;">
-        <td colspan="2" style="padding: 8px 15px; text-align: center; font-weight: 600; color: #3730a3;">
-            Persentase Kehadiran:
-            {{ $attendanceStats['attendancePercentage'] }}%
-            ({{ $attendanceStats['totalH'] }} hadir dari {{ $attendanceStats['schoolDays'] }} hari efektif)
-        </td>
     </tr>
 </table>
 
