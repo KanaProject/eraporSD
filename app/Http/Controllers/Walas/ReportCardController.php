@@ -117,17 +117,59 @@ class ReportCardController extends Controller
         $semester   = $period->semester;
         $note       = HomeroomNote::where('student_id', $student->id)->where('assessment_period_id', $period->id)->first();
 
-        $months = $semester->type === 'ganjil' ? [7, 8, 9, 10, 11, 12] : [1, 2, 3, 4, 5, 6];
-        $attendance = \App\Models\Attendance::where('student_id', $student->id)
-            ->where('academic_year_id', $semester->academic_year_id)
-            ->whereIn('month', $months)
-            ->selectRaw('SUM(sakit) as sakit, SUM(izin) as izin, SUM(alpa) as alpa')
-            ->first();
+        // Determine the 3 months for this specific period
+        $periodMonths = match($period->code) {
+            'ASTS_GANJIL' => [7, 8, 9],
+            'SAS'         => [10, 11, 12],
+            'ASTS_GENAP'  => [1, 2, 3],
+            'SAT'         => [4, 5, 6],
+            default       => ($semester->type === 'ganjil' ? [7, 8, 9] : [1, 2, 3]),
+        };
+
+        $academicYear = $semester->academicYear;
+        $parts = explode('/', $academicYear->name ?? '2024/2025');
+        $startYear = (int) $parts[0];
+        $endYear   = count($parts) > 1 ? (int) $parts[1] : $startYear + 1;
+
+        // Fetch attendance records with daily_data for those 3 months
+        $attendanceRecords = \App\Models\Attendance::where('student_id', $student->id)
+            ->where('academic_year_id', $academicYear->id)
+            ->whereIn('month', $periodMonths)
+            ->get()
+            ->keyBy('month');
+
+        $totalH = 0; $totalS = 0; $totalI = 0; $totalA = 0; $totalL = 0; $totalDays = 0;
+
+        foreach ($periodMonths as $m) {
+            $year = ($m >= 7 && $m <= 12) ? $startYear : $endYear;
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $m, $year);
+            $record    = $attendanceRecords->get($m);
+            $dailyData = $record ? ($record->daily_data ?? []) : [];
+
+            for ($d = 1; $d <= $daysInMonth; $d++) {
+                $status = $dailyData[$d] ?? 'H';
+                $totalDays++;
+                match($status) {
+                    'S'     => $totalS++,
+                    'I'     => $totalI++,
+                    'A'     => $totalA++,
+                    'L'     => $totalL++,
+                    default => $totalH++,
+                };
+            }
+        }
+
+        $schoolDays          = $totalDays - $totalL;
+        $attendancePercentage = $schoolDays > 0 ? round(($totalH / $schoolDays) * 100, 1) : 0;
+
+        // Keep $attendance for backward compat (sakit/izin/alpa totals from period)
+        $attendance = (object) ['sakit' => $totalS, 'izin' => $totalI, 'alpa' => $totalA];
+        $attendanceStats = compact('totalH', 'totalS', 'totalI', 'totalA', 'totalL', 'totalDays', 'schoolDays', 'attendancePercentage', 'periodMonths');
 
         $walas = Auth::user();
         $template = $period->isAstsType() ? 'pdf.report-card-asts' : 'pdf.report-card-sas';
 
-        return compact('student', 'period', 'semester', 'school', 'mainSubjects', 'grades', 'configs', 'note', 'walas', 'attendance', 'template');
+        return compact('student', 'period', 'semester', 'school', 'mainSubjects', 'grades', 'configs', 'note', 'walas', 'attendance', 'attendanceStats', 'template');
     }
 
     public function generateAll(Request $request)

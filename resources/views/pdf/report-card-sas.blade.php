@@ -177,6 +177,13 @@
         <td style="padding: 5px 15px;">Tanpa Keterangan</td>
         <td style="padding: 5px 15px; text-align: center;">{{ $attendance->alpa ?? 0 }} hari</td>
     </tr>
+    <tr style="background-color: #f0f4ff; border-top: 1px solid #c7d2fe;">
+        <td colspan="2" style="padding: 8px 15px; text-align: center; font-weight: 600; color: #3730a3;">
+            Persentase Kehadiran:
+            {{ $attendanceStats['attendancePercentage'] }}%
+            ({{ $attendanceStats['totalH'] }} hadir dari {{ $attendanceStats['schoolDays'] }} hari efektif)
+        </td>
+    </tr>
 </table>
 
 <div class="font-bold mb-2 mt-4">C. CATATAN WALI KELAS</div>
