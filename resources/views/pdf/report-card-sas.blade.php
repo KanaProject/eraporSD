@@ -164,22 +164,28 @@
 </table>
 
 <div class="font-bold mb-2 mt-4">B. KETIDAKHADIRAN</div>
-<table class="data" style="width: 60%;">
+<table style="width: 65%; border-collapse: collapse;">
     <tr>
-        <td style="padding: 5px 15px; width: 45%;">Sakit</td>
-        <td style="padding: 5px 15px; width: 25%; text-align: center;">{{ $attendance->sakit ?? 0 }} hari</td>
-        <td rowspan="3" style="padding: 10px 15px; width: 30%; text-align: center; font-weight: 600; vertical-align: middle; color: #1e3a8a;">
+        <td style="width: 68%; vertical-align: top; padding: 0;">
+            <table class="data" style="width: 100%; margin: 0;">
+                <tr>
+                    <td style="padding: 5px 15px; width: 60%;">Sakit</td>
+                    <td style="padding: 5px 15px; width: 40%; text-align: center;">{{ $attendance->sakit ?? 0 }} hari</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 15px;">Izin</td>
+                    <td style="padding: 5px 15px; text-align: center;">{{ $attendance->izin ?? 0 }} hari</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 15px;">Tanpa Keterangan</td>
+                    <td style="padding: 5px 15px; text-align: center;">{{ $attendance->alpa ?? 0 }} hari</td>
+                </tr>
+            </table>
+        </td>
+        <td style="width: 32%; border: 1px solid #000; text-align: center; vertical-align: middle; font-weight: 600; color: #1e3a8a; padding: 10px 8px;">
             Persentase<br>Kehadiran:<br>
             <span style="font-size: 14px;">{{ $attendanceStats['attendancePercentage'] }}%</span>
         </td>
-    </tr>
-    <tr>
-        <td style="padding: 5px 15px;">Izin</td>
-        <td style="padding: 5px 15px; text-align: center;">{{ $attendance->izin ?? 0 }} hari</td>
-    </tr>
-    <tr>
-        <td style="padding: 5px 15px;">Tanpa Keterangan</td>
-        <td style="padding: 5px 15px; text-align: center;">{{ $attendance->alpa ?? 0 }} hari</td>
     </tr>
 </table>
 
