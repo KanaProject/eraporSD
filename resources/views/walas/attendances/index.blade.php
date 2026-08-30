@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
             <div>
-                <h2 class="text-xl sm:text-2xl font-bold mb-1 truncate text-gray-800">Absensi Siswa Harian</h2>
+                <h2 class="text-xl sm:text-2xl font-bold mb-1 truncate text-gray-800">Absensi Siswa</h2>
                 <p class="text-sm text-gray-500">
                     Kelas: <span class="font-semibold text-gray-700">{{ $assignment->schoolClass->name }}</span> | 
                     Tahun Ajaran: <span class="font-semibold text-gray-700">{{ $academicYear->name }}</span>
